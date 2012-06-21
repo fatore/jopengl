@@ -4,15 +4,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-import javax.media.opengl.awt.GLCanvas;
-
 import br.usp.gl.matrices.Matrix4;
 
 public class TrackballListener extends MouseAdapter implements MouseMotionListener {
 	
 	private final static int EPS2 = 25;
-	
-	private GLCanvas glCanvas;
 	
 	private boolean execute;
 	
@@ -29,9 +25,7 @@ public class TrackballListener extends MouseAdapter implements MouseMotionListen
     private Quaternion lastQuaternion;
     private Quaternion currentQuaternion;
     
-    public TrackballListener(GLCanvas glCanvas) {
-    	
-    	this.glCanvas = glCanvas;
+    public TrackballListener() {
     	
     	rotationMatrix = new Matrix4();
     	
@@ -94,7 +88,6 @@ public class TrackballListener extends MouseAdapter implements MouseMotionListen
 			
 			currentQuaternion.addQuats(lastQuaternion.getQuaternion(),
 					currentQuaternion.getQuaternion());
-			glCanvas.repaint();
 			prevX = currX;
 			prevY = currY;
 		}

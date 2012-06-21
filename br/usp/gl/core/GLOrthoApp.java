@@ -1,5 +1,9 @@
 package br.usp.gl.core;
 
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
@@ -7,6 +11,10 @@ import br.usp.gl.listeners.PanListener;
 import br.usp.gl.listeners.TrackballListener;
 import br.usp.gl.listeners.ZoomListener;
 import br.usp.gl.matrices.Matrix4;
+
+import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.AnimatorBase;
+import com.jogamp.opengl.util.FPSAnimator;
 
 
 public abstract class GLOrthoApp extends GLApp implements GLEventListener {
@@ -21,9 +29,9 @@ public abstract class GLOrthoApp extends GLApp implements GLEventListener {
 	// Rotation Matrix
 	protected Matrix4 rotationMatrix;
 	
-	public GLOrthoApp(String[] paths) {
+	public GLOrthoApp(String shadersFolder) {
 		
-		super(paths);
+		super(shadersFolder);
 		
 		// Events Listeners
 		glCanvas.addGLEventListener(0, new OrthoEventsListener());
@@ -34,14 +42,42 @@ public abstract class GLOrthoApp extends GLApp implements GLEventListener {
 		glCanvas.addMouseMotionListener(panListener);
 		
 		// Zoom Listener
-		zoomListener = new ZoomListener(glCanvas, INITIAL_ZOOM);
+		zoomListener = new ZoomListener(INITIAL_ZOOM);
 		glCanvas.addMouseListener(zoomListener);
 		glCanvas.addMouseMotionListener(zoomListener);
 		
 		// Track-ball Listener
-		trackballListener = new TrackballListener(glCanvas);
+		trackballListener = new TrackballListener();
 		glCanvas.addMouseListener(trackballListener);
 		glCanvas.addMouseMotionListener(trackballListener);
+	}
+	
+	public void run(int fps) {
+		
+		Frame frame = new Frame("OpenGL 4");
+		frame.add(this.getGLCanvas());
+		frame.setSize(this.getGLCanvas().getWidth(), this.getGLCanvas().getHeight());
+
+		final AnimatorBase animator;
+		if (fps > 0) {
+			animator = new FPSAnimator(this.getGLCanvas(), fps);
+		} else {
+			animator = new Animator(this.getGLCanvas());
+		}
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				new Thread(new Runnable() {
+					public void run() {
+						animator.stop();
+						System.exit(0);
+					}
+				}).start();
+			}
+		});
+		frame.setVisible(true);
+		this.getGLCanvas().requestFocusInWindow();
+
+		animator.start();
 	}
 
 	public abstract void init(GLAutoDrawable drawable);

@@ -4,8 +4,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-import javax.media.opengl.awt.GLCanvas;
-
 
 public class ZoomListener extends MouseAdapter implements MouseMotionListener {
 	
@@ -16,17 +14,14 @@ public class ZoomListener extends MouseAdapter implements MouseMotionListener {
 	private boolean execute = false;
 	private int prevy = 0;
 	
-	private GLCanvas glCanvas;
-	
 	private final float initialZoom;
 	
 	private float zoom;
 	
 	public float getZoom() {return zoom;}
 	
-	public ZoomListener(GLCanvas glCanvas, float initialZoom) {
+	public ZoomListener(float initialZoom) {
 		
-		this.glCanvas = glCanvas;
 		this.zoom = initialZoom;
 		this.initialZoom = initialZoom;
 	}
@@ -50,7 +45,6 @@ public class ZoomListener extends MouseAdapter implements MouseMotionListener {
 					zoom -= ZOOM_INTESITY;
 				}
 			}
-			glCanvas.repaint();
 		}
 	}
 

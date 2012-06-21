@@ -4,7 +4,7 @@ import br.usp.gl.util.JsonObjectReader;
 
 public class JsonModel extends Model {
 
-	private String filename;
+	protected String filename;
 	
 	
 	public JsonModel(String filename) {

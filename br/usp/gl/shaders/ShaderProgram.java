@@ -15,29 +15,81 @@ import com.jogamp.common.nio.Buffers;
 
 public class ShaderProgram {
 
-	private static final int[] types = new int[] {
+	private static final int[] TYPES = new int[] {
 		GL4.GL_VERTEX_SHADER,
 		GL4.GL_TESS_CONTROL_SHADER,
 		GL4.GL_TESS_EVALUATION_SHADER,
 		GL4.GL_GEOMETRY_SHADER,
 		GL4.GL_FRAGMENT_SHADER
 	};
+	
+	private static final String[] SHADERS = new String[] {
+		"vertex",
+		"tessControl",
+		"tessEval",
+		"geometry",
+		"fragment"
+	};
+	
+	private String sourcesFolder;
 
 	private GL4 gl = null;
 
 	private int handle = -1;
 
 	private String[] sources;
-	
 
-	public ShaderProgram(String[] paths) {
+	public ShaderProgram(String sourcesFolder) {
 		
-		sources = new String[types.length];
+		this.sourcesFolder = sourcesFolder;
+	}
+	
+	public void init(final GL4 gl) {
+
+		this.gl = gl;
+		
+		readSources();
+		
+		int[] shadersHandles = new int[sources.length];
 		
 		for (int i = 0; i < sources.length; i++) {
-			sources[i] = (!paths[i].isEmpty()) ?  
-					readSource(Resource.getInputStream(paths[i])) : null;
+			shadersHandles[i] = (sources[i] != null) ? compileSource(sources[i], TYPES[i]) : -1;
 		}
+
+		handle = linkShaders(shadersHandles);
+		
+		for (int i = 0; i < shadersHandles.length; i++) {
+			if (shadersHandles[i] >= 0) {
+				gl.glDeleteShader(shadersHandles[i]);
+			}
+		}
+	}
+	
+	public void readSources() {
+		
+		System.out.println("Reading shaders from: " + sourcesFolder);
+		
+		sources = new String[TYPES.length];
+		
+		for (int i = 0; i < sources.length; i++) {
+			InputStream source = Resource.getInputStream(sourcesFolder + SHADERS[i] + ".glsl");
+			if (source == null) {
+				System.err.println("\t" + SHADERS[i] + " shader not found.");
+			} else {
+				System.out.println("\t" + SHADERS[i] + " shader found.");
+				sources[i] = readSource(source);
+			}
+		}
+	}
+
+	public void bind() {
+
+		gl.glUseProgram(handle);
+	}
+
+	public void dispose() {
+
+		gl.glDeleteProgram(handle);
 	}
 	
 	public int getUniformLocation(String varName) {
@@ -55,41 +107,12 @@ public class ShaderProgram {
 	public int getAttribLocation(String varName) {
 		int location = gl.glGetAttribLocation(handle, varName);
 		if (location < 0) {
-			System.err.println(varName + " attribute not found.");
+			System.err.println(varName + " attribute not found");
 			return -1;
 		} else {
-			System.out.println(varName + " attribute found.");
+			System.out.println(varName + " attribute found");
 			return location;
 		}
-	}
-	
-	public void init(final GL4 gl) {
-
-		this.gl = gl;
-
-		int[] shadersHandles = new int[sources.length];
-		
-		for (int i = 0; i < sources.length; i++) {
-			shadersHandles[i] = (sources[i] != null) ? compileSource(sources[i], types[i]) : -1;
-		}
-
-		handle = linkShaders(shadersHandles);
-		
-		for (int i = 0; i < shadersHandles.length; i++) {
-			if (shadersHandles[i] >= 0) {
-				gl.glDeleteShader(shadersHandles[i]);
-			}
-		}
-	}
-
-	public void bind() {
-
-		gl.glUseProgram(handle);
-	}
-
-	public void dispose() {
-
-		gl.glDeleteProgram(handle);
 	}
 
 	private String readSource(final InputStream inputStream) {

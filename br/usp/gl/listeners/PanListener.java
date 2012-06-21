@@ -45,7 +45,6 @@ public class PanListener extends MouseAdapter implements MouseMotionListener {
 			this.prevy = e.getY();
 			panY += (diffy / glCanvas.getSize().height) * WINDOW_SIZE;
 
-			glCanvas.repaint();
 		}
 	}
 

@@ -44,7 +44,7 @@ public abstract class GLApp implements GLEventListener {
 	// Misc
 	protected long lastTime;
 	
-	public GLApp(String[] paths) {
+	public GLApp(String shadersFolder) {
 
 		System.setProperty( "java.library.path", "/path/to/libs" );
 		
@@ -66,7 +66,7 @@ public abstract class GLApp implements GLEventListener {
 		glCanvas.addGLEventListener(0, new BasicEvents());
 		glCanvas.addGLEventListener(1, this);
 		
-		shaderProgram = new ShaderProgram(paths);
+		shaderProgram = new ShaderProgram(shadersFolder);
 		
 		pMatrix = new ProjectionMatrix();
 		mvMatrix = new ModelViewMatrix();

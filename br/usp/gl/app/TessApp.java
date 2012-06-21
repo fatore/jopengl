@@ -1,56 +1,42 @@
 package br.usp.gl.app;
 
-import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL4;
 import javax.media.opengl.GLAutoDrawable;
 
 import br.usp.gl.core.GLOrthoApp;
-import br.usp.gl.core.JsonModel;
 import br.usp.gl.core.Light;
-
-import com.jogamp.opengl.util.Animator;
-import com.jogamp.opengl.util.AnimatorBase;
-import com.jogamp.opengl.util.FPSAnimator;
+import br.usp.gl.core.Model;
+import br.usp.gl.models.Icosahedron;
 
 
 public class TessApp extends GLOrthoApp implements KeyListener {
 
-	private static final int FPS = 60;
-
+	public static final int FPS = 60;
+	public static final String FOLDER = "br/usp/gl/app/shaders/tess/";
+	public static final String FUNNEL_FILE = "../models/funnel.json";
+	public static final String TEA_POT_FILE = "../models/teapot.json";
+	
 	private Light light;
 	
 	private float tessInnerLevel;
 	private float tessOuterLevel;
 	
-	private int tessInnerLevelHandle = -1;
-	private int tessOuterLevelHandle = -1;
+	private int tessInnerLevelHandle;
+	private int tessOuterLevelHandle;
 	
-	private static final String shadersFolder = "br/usp/gl/app/shaders/";
-	
-	private JsonModel model;
-	private static final String modelFilePath = 
-			"/home/fm/workspace/pf/data/43157/1000/cut3/projections/funnel.json";
-//			"/home/fm/jsws/demos/lesson14/Teapot.json";
+	private Model model;
 	
 	public TessApp() {
 		
-		super(new String[] {
-				shadersFolder + "vertex.glsl", 
-				shadersFolder + "tessControl.glsl", 
-				shadersFolder + "tessEval.glsl", 
-				shadersFolder + "geometry.glsl", 
-				shadersFolder + "fragment.glsl"
-		});
+		super(FOLDER);
 
 		this.glCanvas.addKeyListener(this);
 		
-		model = new JsonModel(modelFilePath);
+		model = new Icosahedron();
 		
 		light = new Light(
 				new float[]{1.0f, 1.0f, 1.0f},
@@ -159,31 +145,6 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 	public static void main(final String args[]) {
 
 		TessApp app = new TessApp();
-
-		Frame frame = new Frame("OpenGL 4 Lessons");
-		frame.add(app.getGLCanvas());
-		frame.setSize(app.getGLCanvas().getWidth(), app.getGLCanvas().getHeight());
-
-		final AnimatorBase animator;
-		int fps = FPS;
-		if (fps < 0) {
-			 animator = new Animator(app.getGLCanvas());
-		} else {
-			 animator = new FPSAnimator(app.getGLCanvas(), fps);
-		}
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				new Thread(new Runnable() {
-					public void run() {
-						animator.stop();
-						System.exit(0);
-					}
-				}).start();
-			}
-		});
-		frame.setVisible(true);
-		app.getGLCanvas().requestFocusInWindow();
-
-		animator.start();
+		app.run(FPS);
 	}
 }

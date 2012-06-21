@@ -1,10 +1,7 @@
 package br.usp.gl.app;
 
-import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL4;
@@ -14,47 +11,29 @@ import br.usp.gl.core.GLOrthoApp;
 import br.usp.gl.core.JsonModel;
 import br.usp.gl.core.Light;
 
-import com.jogamp.opengl.util.Animator;
-import com.jogamp.opengl.util.AnimatorBase;
-import com.jogamp.opengl.util.FPSAnimator;
-
 
 public class AutonormApp extends GLOrthoApp implements KeyListener {
 
-	private static final int FPS = 60;
+	public static final int FPS = 60;
+	public static final String FOLDER = "br/usp/gl/app/shaders/autonorm/";
+	public static final String FUNNEL_FILE = "../models/funnel.json";
+	public static final String TEA_POT_FILE = "/home/fm/workspace/JOpenGL/models/teapot.json";
 
 	private Light light;
-	
-	private float tessInnerLevel;
-	private float tessOuterLevel;
-	
-	private int tessInnerLevelHandle = -1;
-	private int tessOuterLevelHandle = -1;
 	
 	private int pancakeHandle = -1;
 	private boolean wireframe = false;
 	private boolean pancake = false;
 	
-	private static final String shadersFolder = "br/usp/gl/app/shaders/autonorm/";
-	
 	private JsonModel model;
-	private static final String modelFilePath = 
-			"/home/fm/workspace/pf/data/43157/1000/cut3/projections/funnel.json";
-//			"/home/fm/jsws/demos/lesson14/Teapot.json";
 	
 	public AutonormApp() {
 		
-		super(new String[] {
-				shadersFolder + "vertex.glsl", 
-				"", 
-				"", 
-				shadersFolder + "geometry.glsl",
-				shadersFolder + "fragment.glsl"
-		});
+		super(FOLDER);
 
 		this.glCanvas.addKeyListener(this);
 		
-		model = new JsonModel(modelFilePath);
+		model = new JsonModel(TEA_POT_FILE);
 		
 		light = new Light(
 				new float[]{1.0f, 1.0f, 1.0f},
@@ -62,8 +41,6 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 				new float[]{0.5f, 0.5f, 0.5f, 1.0f},
 				new float[]{0.7f, 0.7f, 0.7f, 1.0f}, true);
 		
-		tessInnerLevel = 1;
-		tessOuterLevel = 1;
 	}
 
 	@Override
@@ -80,9 +57,6 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 				shaderProgram.getUniformLocation("uLightDiffuseColor"),
 				shaderProgram.getUniformLocation("uLightSpecularColor"));
 		
-		tessInnerLevelHandle = shaderProgram.getUniformLocation("uTessInnerLevel");
-		tessOuterLevelHandle = shaderProgram.getUniformLocation("uTessOuterLevel");
-		
 		pancakeHandle = shaderProgram.getUniformLocation("uPancake");
 		
 		model.init(gl, shaderProgram.getAttribLocation("aVertexPosition"),
@@ -93,9 +67,6 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 	@Override
 	public void display(final GLAutoDrawable drawable) {
 
-		gl.glUniform1f(tessInnerLevelHandle, tessInnerLevel);
-	    gl.glUniform1f(tessOuterLevelHandle, tessOuterLevel);
-	    
 	    light.bindDirection();
 	    light.bindAmbientColor();
 	    light.bindDiffuseColor();
@@ -141,19 +112,15 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 			break;
 			
 		case 37: // left arrow
-			tessInnerLevel -= (tessInnerLevel > 1) ? 1 : 0;
 			break;
 			
 		case 38: // up arrow
-			tessOuterLevel++;
 			break;
 			
 		case 39: // right arrow
-			tessInnerLevel++;
 			break;
 			
 		case 40: // down arrow
-			tessOuterLevel -= (tessOuterLevel > 1) ? 1 : 0;
 			break;
 			
 		}
@@ -184,31 +151,6 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 	public static void main(final String args[]) {
 
 		AutonormApp app = new AutonormApp();
-
-		Frame frame = new Frame("OpenGL 4 ");
-		frame.add(app.getGLCanvas());
-		frame.setSize(app.getGLCanvas().getWidth(), app.getGLCanvas().getHeight());
-
-		final AnimatorBase animator;
-		int fps = FPS;
-		if (fps < 0) {
-			 animator = new Animator(app.getGLCanvas());
-		} else {
-			 animator = new FPSAnimator(app.getGLCanvas(), fps);
-		}
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				new Thread(new Runnable() {
-					public void run() {
-						animator.stop();
-						System.exit(0);
-					}
-				}).start();
-			}
-		});
-		frame.setVisible(true);
-		app.getGLCanvas().requestFocusInWindow();
-
-		animator.start();
+		app.run(FPS);
 	}
 }

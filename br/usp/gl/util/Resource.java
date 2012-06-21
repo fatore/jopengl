@@ -9,7 +9,6 @@ public class Resource {
 
         final InputStream inputStream = Resource.class.getClassLoader().getResourceAsStream(path);
 
-        if (inputStream == null) throw new RuntimeException("file not found: " + path);
-        else return inputStream;
+        return inputStream;
     }
 }
