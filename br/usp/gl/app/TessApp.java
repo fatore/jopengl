@@ -5,20 +5,19 @@ import java.awt.event.KeyListener;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL4;
-import javax.media.opengl.GLAutoDrawable;
 
 import br.usp.gl.core.GLOrthoApp;
 import br.usp.gl.core.Light;
-import br.usp.gl.core.Model;
 import br.usp.gl.models.Icosahedron;
+import br.usp.gl.models.Model;
 
 
 public class TessApp extends GLOrthoApp implements KeyListener {
 
 	public static final int FPS = 60;
-	public static final String FOLDER = "br/usp/gl/app/shaders/tess/";
-	public static final String FUNNEL_FILE = "../models/funnel.json";
-	public static final String TEA_POT_FILE = "../models/teapot.json";
+	public static final String SHADERS_FOLDER = "shaders/tess/";
+	public static final String FUNNEL_FILE = "data/models/funnel.json";
+	public static final String TEA_POT_FILE = "data/models/teapot.json";
 	
 	private Light light;
 	
@@ -32,7 +31,7 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 	
 	public TessApp() {
 		
-		super(FOLDER);
+		super(SHADERS_FOLDER);
 
 		this.glCanvas.addKeyListener(this);
 		
@@ -49,7 +48,7 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 	}
 
 	@Override
-	public void init(final GLAutoDrawable drawable) {
+	public void init() {
 
 		gl.glClearColor(0.7f, 0.6f, 0.5f, 0.0f);
 		
@@ -71,7 +70,7 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 	}
 
 	@Override
-	public void display(final GLAutoDrawable drawable) {
+	public void display() {
 
 		gl.glUniform1f(tessInnerLevelHandle, tessInnerLevel);
 	    gl.glUniform1f(tessOuterLevelHandle, tessOuterLevel);
@@ -94,11 +93,11 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 	}
 
 	@Override
-	public void reshape(final GLAutoDrawable drawable, final int x,
+	public void reshape(final int x,
 			final int y, final int width, final int height) {}
 
 	@Override
-	public void dispose(final GLAutoDrawable drawable) {
+	public void dispose() {
 		
 		model.dispose();
 	}
@@ -145,6 +144,6 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 	public static void main(final String args[]) {
 
 		TessApp app = new TessApp();
-		app.run(FPS);
+		app.run("Tess App", FPS);
 	}
 }

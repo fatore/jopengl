@@ -1,6 +1,5 @@
 package br.usp.gl.models;
 
-import br.usp.gl.core.Model;
 
 
 
