@@ -1,7 +1,7 @@
 #version 150
 
-uniform mat4 uMVMatrix;
 uniform mat4 uPMatrix;
+uniform mat4 uMVMatrix;
 uniform mat3 uNMatrix;
 
 in vec3 a_vertex;
@@ -9,8 +9,6 @@ in vec3 a_normal;
 
 out vec3 v_normal;
 out vec3 v_eye;
-
-out vec3 N;
 
 void main(void) {
 
@@ -21,8 +19,5 @@ void main(void) {
 	v_normal = uNMatrix * a_normal;
 
 	gl_Position = uPMatrix * vertex;
-	
-	N = normalize(v_normal);
 }
-
 

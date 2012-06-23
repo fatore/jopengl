@@ -24,16 +24,7 @@ in vec3 v_eye;
 
 out vec4 fragColor;
 
-in vec3 N;
-
 void main(void) {
-
-
-	vec3 L = normalize(u_light.direction);
-	vec4 Idiff = u_light.diffuseColor * u_material.diffuseColor * max(dot(N,L), 0.0);
-	Idiff = clamp(Idiff, 0.0, 1.0); 
-	
-	//fragColor = Idiff;
 
 	// ambient coeficient
 	vec4 color = u_light.ambientColor * u_material.ambientColor;
@@ -45,7 +36,7 @@ void main(void) {
 	if (nDotL > 0.0) {
 	
 		// diffuse coeficient
-		//color += u_light.diffuseColor * u_material.diffuseColor * nDotL;
+		color += u_light.diffuseColor * u_material.diffuseColor * nDotL;
 	
 		vec3 eye = normalize(v_eye);
 		
@@ -55,7 +46,7 @@ void main(void) {
 		float eDotR = max(dot(eye, reflection), 0.0);
 		
 		// specular coeficient		
-		//color += u_light.specularColor * u_material.specularColor * (eDotR, u_material.specularExponent);
+		color += u_light.specularColor * u_material.specularColor * (eDotR, u_material.specularExponent);
 	}
  	
 	fragColor = color;
