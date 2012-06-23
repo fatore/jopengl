@@ -24,7 +24,7 @@ public class Example03 extends GLApp  {
 
 		texture = new Texture2D(TEXTURES_FOLDER + "desert.png", GL4.GL_TEXTURE0, 0);
 		
-		model = new Plane();
+		model = new Plane(0.5f);
 		
 	}
 

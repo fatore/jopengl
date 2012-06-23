@@ -12,7 +12,7 @@ public abstract class Model {
 	
 	protected float[] positions;
 	protected float[] normals;
-	protected float[] textureCoord;
+	protected float[] texCoords;
 	protected int[] indices; 
 	
 	private Texture2D texture;
@@ -28,9 +28,6 @@ public abstract class Model {
 	
 	int[] vaoHandle;
 	
-	public Model() {}
-	
-	abstract public void load();
 	
 	public void init(GL4 gl, int positionHandle) {
 		
@@ -53,8 +50,6 @@ public abstract class Model {
 		
 		this.gl = gl;
 		
-		load();
-		
 		this.positionHandle = positionHandle;
 		this.normalsHandle = normalsHandle;
 		
@@ -74,8 +69,8 @@ public abstract class Model {
 			normalsBuffer = new ArrayBuffer(gl, normals, 3, normalsHandle);
 		}
 		
-		if (textureCoord != null && textureCoordHandle >= 0) {
-			textureCoordsBuffer = new ArrayBuffer(gl, textureCoord, 2, textureCoordHandle);
+		if (texCoords != null && textureCoordHandle >= 0) {
+			textureCoordsBuffer = new ArrayBuffer(gl, texCoords, 2, textureCoordHandle);
 		}
 		
 		if (indices != null) {

@@ -1,8 +1,5 @@
 package br.usp.gl.models;
 
-
-
-
 public class Pyramid extends Model {
 	
 	private static final float[] sPositions = new float[] {
@@ -24,8 +21,7 @@ public class Pyramid extends Model {
 		2,3,4	// Back
 	};
 
-	@Override
-	public void load() {
+	public Pyramid() {
 		
 		this.positions = sPositions;
 		this.indices = sIndices;

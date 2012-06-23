@@ -4,6 +4,8 @@ uniform mat4 uPMatrix;
 uniform mat4 uMVMatrix;
 uniform mat3 uNMatrix;
 
+uniform vec3 uLightDirection;
+
 in vec3 aVertexPosition;
 in vec3 aVertexNormal;
 

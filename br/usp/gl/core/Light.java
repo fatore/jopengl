@@ -88,7 +88,9 @@ public class Light {
 	}
 	
 	public void bindDirection() {
-		gl.glUniform3fv(directionHandle, 1, Buffers.newDirectFloatBuffer(getDirection()));
+		
+		float[] normalizedDir = Vector3.normalize(direction).getVector();
+		gl.glUniform3fv(directionHandle, 1, Buffers.newDirectFloatBuffer(normalizedDir));
 	}
 	
 	public void bindAdjustedLD() {

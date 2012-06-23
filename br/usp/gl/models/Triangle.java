@@ -12,8 +12,7 @@ public class Triangle extends Model {
 		 0.0f, 0.5f, 0.0f,
 	};
 	
-	@Override
-	public void load() {
+	public Triangle() {
 		
 		this.positions = sPositions;
 	}

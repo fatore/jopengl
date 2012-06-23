@@ -1,8 +1,5 @@
 package br.usp.gl.models;
 
-
-
-
 public class Icosahedron extends Model {
 	
 	private static final float[] sPositions = new float[] {
@@ -46,8 +43,7 @@ public class Icosahedron extends Model {
         1, 6, 10
 	};
 	
-	@Override
-	public void load() {
+	public Icosahedron() {
 		
 		this.positions = sPositions;
 		this.indices = sIndices;

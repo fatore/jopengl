@@ -1,23 +1,17 @@
 #version 150
 
-uniform sampler2D u_texture; 
+uniform vec3 u_lightDirection;
+uniform vec4 u_color;
 
-in vec2 v_texCoord;
+in vec3 v_normal;
 
 out vec4 fragColor;
 
 void main(void)
 {
-	vec4 color = texture(u_texture, v_texCoord);
-
-	if (v_texCoord.s >= 0.5)
-	{
-		float grey = color.r*0.299 + color.g*0.587 + color.b*0.114;
-		
-		fragColor = vec4(grey, grey, grey, 1.0f);
-	}
-	else
-	{
-		fragColor = color;
-	}
+	// Lambert without emissive color. al is the ambient, hard coded light factor.
+	// <ambient> * al + <diffuse> * max(N*L, 0)
+ 	vec4 v_color = u_color * 0.3 + u_color * max(dot(v_normal, u_lightDirection), 0.0);
+ 	
+	fragColor = v_color;
 }

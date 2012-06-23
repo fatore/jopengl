@@ -5,32 +5,38 @@ import javax.media.opengl.GL4;
 
 import br.usp.gl.core.GLOrthoApp;
 import br.usp.gl.core.Light;
-import br.usp.gl.models.Cube;
+import br.usp.gl.core.Material;
 import br.usp.gl.models.Model;
-import br.usp.gl.util.Maths;
+import br.usp.gl.models.Sphere;
 
 
-public class Example04 extends GLOrthoApp{
+public class Example05 extends GLOrthoApp{
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/c/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/d/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	
 	private Light light;
+	private Material material;
 
 	private Model model;
 	
-	public Example04() {
+	public Example05() {
 		
 		super(SHADERS_FOLDER);
 		
 		light = new Light(
 				new float[]{1.0f, 1.0f, 1.0f},
-				new float[]{0.0f, 0.0f, 0.0f, 1.0f},
-				new float[]{1.0f, 0.0f, 0.0f, 1.0f},
+				new float[]{0.3f, 0.3f, 0.3f, 1.0f},
+				new float[]{1.0f, 1.0f, 1.0f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, true);
 
-		model = new Cube();
+		material = new Material(
+				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
+				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
+				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 20.0f);
+		
+		model = new Sphere(0.5f, 32);
 		
 	}
 
@@ -43,10 +49,15 @@ public class Example04 extends GLOrthoApp{
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_CULL_FACE);
 		
-		light.init(gl, shaderProgram.getUniformLocation("u_lightDirection"),
-				shaderProgram.getUniformLocation("uLightAmbientColor"),
-				shaderProgram.getUniformLocation("u_color"),
-				shaderProgram.getUniformLocation("uLightSpecularColor"));
+		light.init(gl, shaderProgram.getUniformLocation("u_light.direction"),
+				shaderProgram.getUniformLocation("u_light.ambientColor"),
+				shaderProgram.getUniformLocation("u_light.diffuseColor"),
+				shaderProgram.getUniformLocation("u_light.specularColor"));
+		
+		material.init(gl, shaderProgram.getUniformLocation("u_material.ambientColor"),
+				shaderProgram.getUniformLocation("u_material.diffuseColor"),
+				shaderProgram.getUniformLocation("u_material.specularColor"),
+				shaderProgram.getUniformLocation("u_material.specularExponent"));
 		
 		model.init(gl, shaderProgram.getAttribLocation("a_vertex"),
 				shaderProgram.getAttribLocation("a_normal"));
@@ -58,16 +69,9 @@ public class Example04 extends GLOrthoApp{
 		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
 		
 		light.bind();
+		material.bind();
+		
 		model.bind();
-		
-		mvMatrix.rotate(Maths.degToRad(45), new float[]{1,0,0});
-		mvMatrix.rotate(Maths.degToRad(45), new float[]{0,1,0});
-		
-		mvMatrix.bind();
-		
-		nMatrix.update(mvMatrix);
-		nMatrix.bind();
-			
 		model.draw(GL4.GL_TRIANGLES);
 		
 		gl.glFlush();
@@ -84,7 +88,7 @@ public class Example04 extends GLOrthoApp{
 	
 	public static void main(final String args[]) {
 
-		Example04 app = new Example04();
+		Example05 app = new Example05();
 		app.run(app.getClass().getName(), FPS);
 	}
 }

@@ -47,7 +47,6 @@ public class SimpleApp extends GLOrthoApp implements KeyListener {
 				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
 				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 20.0f);
-		
 	}
 
 	@Override

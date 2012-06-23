@@ -60,6 +60,9 @@ public abstract class GLOrthoApp extends GLApp {
 				mvMatrix.multiply(rotationMatrix);
 			}
 			mvMatrix.bind();
+			
+			nMatrix.update(mvMatrix);
+			nMatrix.bind();
 
 			defineVisualParameters();
 		}
