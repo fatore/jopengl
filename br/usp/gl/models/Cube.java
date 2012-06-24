@@ -127,10 +127,21 @@ public class Cube extends Model {
 	
 	public Cube() {
 		
+		this(1);
+	}
+	
+	public Cube(float halfExtend) {
+		
 		this.positions = positions_;
-		this.texCoords = textureCoords_;
 		this.normals = normals_;
+		this.texCoords = textureCoords_;
 		this.indices = indices_;
+		
+		for (int i = 0; i < positions.length / 3; i++) {
+			positions[i * 3 + 0] *= halfExtend;
+			positions[i * 3 + 1] *= halfExtend;
+			positions[i * 3 + 2] *= halfExtend;
+		}
 	}
 }
 
