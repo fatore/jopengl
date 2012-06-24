@@ -18,11 +18,11 @@ public class Texture2D {
 	private int no;
 	
 	private BufferedImage image;
+	public BufferedImage getImage() {return image;}
 	
 	private int handle;
 	
 	private Texture texture;
-	
 	
 	public Texture2D(String imageFile, int id, int no) {
 		

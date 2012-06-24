@@ -6,23 +6,27 @@ import javax.media.opengl.GL3;
 import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Light;
 import br.usp.gl.core.Material;
+import br.usp.gl.core.Texture2D;
+import br.usp.gl.models.Cube;
 import br.usp.gl.models.Model;
-import br.usp.gl.models.Sphere;
 
 
-public class Example05 extends GLApp {
+public class Example06 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/d/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/e/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
 	
 	private Light light;
+	
 	private Material material;
 
+	private Texture2D texture;
+	
 	private Model model;
 	
-	public Example05() {
+	public Example06() {
 		
 		super(SHADERS_FOLDER);
 		
@@ -37,7 +41,9 @@ public class Example05 extends GLApp {
 				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 20.0f);
 		
-		model = new Sphere(0.5f, 32);
+		texture = new Texture2D(TEXTURES_FOLDER + "crate.tga", GL3.GL_TEXTURE0, 0);
+		
+		model = new Cube();
 	}
 
 	@Override
@@ -59,6 +65,8 @@ public class Example05 extends GLApp {
 				shaderProgram.getUniformLocation("u_material.specularColor"),
 				shaderProgram.getUniformLocation("u_material.specularExponent"));
 		
+		texture.init(gl, shaderProgram.getUniformLocation("u_texture"));
+		
 		model.init(gl, shaderProgram.getAttribLocation("a_vertex"),
 				shaderProgram.getAttribLocation("a_normal"));
 	}
@@ -68,6 +76,7 @@ public class Example05 extends GLApp {
 
 		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 		
+		mvMatrix.loadIdentity();
 		mvMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 		mvMatrix.bind();
 		
@@ -101,7 +110,7 @@ public class Example05 extends GLApp {
 	
 	public static void main(final String args[]) {
 
-		Example05 app = new Example05();
+		Example06 app = new Example06();
 		app.run(app.getClass().getName(), FPS);
 	}
 }

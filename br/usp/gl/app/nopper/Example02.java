@@ -2,12 +2,12 @@ package br.usp.gl.app.nopper;
 
 import javax.media.opengl.GL3;
 
-import br.usp.gl.core.GLApp;
+import br.usp.gl.core.GLApp2;
 import br.usp.gl.models.Model;
 import br.usp.gl.models.Triangle;
 
 
-public class Example02 extends GLApp  {
+public class Example02 extends GLApp2 {
 
 	public static final int FPS = 60;
 	public static final String SHADERS_FOLDER = "shaders/nopper/a/";
