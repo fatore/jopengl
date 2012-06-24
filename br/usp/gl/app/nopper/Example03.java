@@ -1,6 +1,6 @@
 package br.usp.gl.app.nopper;
 
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
 import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Texture2D;
@@ -22,7 +22,7 @@ public class Example03 extends GLApp  {
 		
 		super(SHADERS_FOLDER);
 
-		texture = new Texture2D(TEXTURES_FOLDER + "desert.png", GL4.GL_TEXTURE0, 0);
+		texture = new Texture2D(TEXTURES_FOLDER + "desert.png", GL3.GL_TEXTURE0, 0);
 		
 		model = new Plane(0.5f);
 		
@@ -43,13 +43,13 @@ public class Example03 extends GLApp  {
 	@Override
 	public void display() {
 
-		gl.glClear(GL4.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL3.GL_COLOR_BUFFER_BIT);
 			
 		mvMatrix.loadIdentity();
 		mvMatrix.translate(new float[]{0, 0, 0});
 		mvMatrix.bind();
 		
-		model.draw(GL4.GL_TRIANGLES);
+		model.draw(GL3.GL_TRIANGLES);
 		
 		gl.glFlush();
 	}

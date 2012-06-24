@@ -24,10 +24,12 @@ in vec3 v_eye;
 
 out vec4 fragColor;
 
-void main(void) {
+void main() {
 
 	// ambient coeficient
-	vec4 color = u_light.ambientColor * u_material.ambientColor;
+	vec4 color;
+	
+	color = u_light.ambientColor * u_material.ambientColor;
 	
 	vec3 normal = normalize(v_normal);
 	
@@ -46,7 +48,7 @@ void main(void) {
 		float eDotR = max(dot(eye, reflection), 0.0);
 		
 		// specular coeficient		
-		color += u_light.specularColor * u_material.specularColor * (eDotR, u_material.specularExponent);
+		color += u_light.specularColor * u_material.specularColor * pow(eDotR, u_material.specularExponent);
 	}
  	
 	fragColor = color;

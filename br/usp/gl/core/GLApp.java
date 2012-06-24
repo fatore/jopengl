@@ -6,7 +6,7 @@ import java.awt.event.WindowEvent;
 import java.util.Calendar;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
@@ -26,7 +26,7 @@ import br.usp.gl.shaders.ShaderProgram;
 public abstract class GLApp implements GLEventListener {
 
 	// OpenGL Pipeline Object
-	protected GL4 gl;
+	protected GL3 gl;
 
 	// Constants
 	public static final int INITIAL_WINDOW_WIDTH = 800;
@@ -115,7 +115,7 @@ public abstract class GLApp implements GLEventListener {
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
-		gl = drawable.getGL().getGL4();
+		gl = drawable.getGL().getGL3();
 
 		System.out.println("OpenGL Version: " + gl.glGetString(GL.GL_VERSION) + "\n");
 
@@ -154,7 +154,7 @@ public abstract class GLApp implements GLEventListener {
 		
 		aspect = (float) canvasWidth / canvasHeight;
 		
-		reshape(x, y, width, height);
+		reshape(x, y, canvasWidth, canvasHeight);
 	}
 
 	public abstract void init();

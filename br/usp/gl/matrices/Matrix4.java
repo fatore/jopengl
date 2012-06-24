@@ -14,6 +14,18 @@ public class Matrix4 extends Matrix {
 		loadIdentity();
 	}
 	
+	public static float[] multiplyVector3(float[] matrix, float[] vector)
+	{
+	    float[] result = new float[3];
+
+	    for (int i = 0; i < 3; i++) {
+	        result[i] = matrix[i] * vector[0] + matrix[4 + i] * vector[1] + matrix[8 + i] * vector[2];
+	    }
+	    return result;
+	}
+
+
+	
 	public void print() {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {

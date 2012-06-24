@@ -10,7 +10,7 @@ in vec3 a_normal;
 out vec3 v_normal;
 out vec3 v_eye;
 
-void main(void) {
+void main() {
 
 	vec4 vertex = uMVMatrix * vec4(a_vertex, 1.0);
 

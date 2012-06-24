@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
 import br.usp.gl.util.Resource;
 
@@ -16,11 +16,11 @@ import com.jogamp.common.nio.Buffers;
 public class ShaderProgram {
 
 	private static final int[] TYPES = new int[] {
-		GL4.GL_VERTEX_SHADER,
-		GL4.GL_TESS_CONTROL_SHADER,
-		GL4.GL_TESS_EVALUATION_SHADER,
-		GL4.GL_GEOMETRY_SHADER,
-		GL4.GL_FRAGMENT_SHADER
+		GL3.GL_VERTEX_SHADER,
+		GL3.GL_TESS_CONTROL_SHADER,
+		GL3.GL_TESS_EVALUATION_SHADER,
+		GL3.GL_GEOMETRY_SHADER,
+		GL3.GL_FRAGMENT_SHADER
 	};
 	
 	private static final String[] SHADERS = new String[] {
@@ -33,7 +33,7 @@ public class ShaderProgram {
 	
 	private String sourcesFolder;
 
-	private GL4 gl = null;
+	private GL3 gl = null;
 
 	private int handle = -1;
 
@@ -44,7 +44,7 @@ public class ShaderProgram {
 		this.sourcesFolder = sourcesFolder;
 	}
 	
-	public void init(final GL4 gl) {
+	public void init(final GL3 gl) {
 
 		this.gl = gl;
 		
@@ -140,12 +140,12 @@ public class ShaderProgram {
 		gl.glShaderSource(handle, 1, new String[] { source }, null, 0);
 		gl.glCompileShader(handle);
 
-		gl.glGetShaderiv(handle, GL4.GL_COMPILE_STATUS, buffer);
+		gl.glGetShaderiv(handle, GL3.GL_COMPILE_STATUS, buffer);
 
 		if (buffer.get(0) == 1)
 			return handle;
 		else {
-			gl.glGetShaderiv(handle, GL4.GL_INFO_LOG_LENGTH, buffer);
+			gl.glGetShaderiv(handle, GL3.GL_INFO_LOG_LENGTH, buffer);
 
 			final ByteBuffer byteBuffer = Buffers.newDirectByteBuffer(buffer
 					.get(0));
@@ -175,13 +175,13 @@ public class ShaderProgram {
 		gl.glValidateProgram(programHandle);
 
 		final IntBuffer buffer = Buffers.newDirectIntBuffer(1);
-		gl.glGetProgramiv(programHandle, GL4.GL_VALIDATE_STATUS, buffer);
+		gl.glGetProgramiv(programHandle, GL3.GL_VALIDATE_STATUS, buffer);
 
 		if (buffer.get(0) == 1)
 			return programHandle;
 		else {
 
-			gl.glGetProgramiv(programHandle, GL4.GL_INFO_LOG_LENGTH, buffer);
+			gl.glGetProgramiv(programHandle, GL3.GL_INFO_LOG_LENGTH, buffer);
 
 			final ByteBuffer byteBuffer = Buffers.newDirectByteBuffer(buffer
 					.get(0));

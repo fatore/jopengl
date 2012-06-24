@@ -1,16 +1,17 @@
 package br.usp.gl.app.nopper;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
-import br.usp.gl.core.GLOrthoApp;
+import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Light;
 import br.usp.gl.core.Material;
+import br.usp.gl.matrices.Matrix4;
 import br.usp.gl.models.Model;
 import br.usp.gl.models.Sphere;
 
 
-public class Example05 extends GLOrthoApp{
+public class Example05 extends GLApp {
 
 	public static final int FPS = 60;
 	public static final String SHADERS_FOLDER = "shaders/nopper/d/";
@@ -37,7 +38,6 @@ public class Example05 extends GLOrthoApp{
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 20.0f);
 		
 		model = new Sphere(0.5f, 32);
-		
 	}
 
 	@Override
@@ -66,19 +66,34 @@ public class Example05 extends GLOrthoApp{
 	@Override
 	public void display() {
 
-		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
+		
+		mvMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+		mvMatrix.bind();
+		
+		nMatrix.extractMatrix(mvMatrix);
+		nMatrix.bind();
+		
+		light.setDirection(Matrix4.multiplyVector3(mvMatrix.getMatrix(), light.getDiffuseColor()));
 		
 		light.bind();
 		material.bind();
 		
 		model.bind();
-		model.draw(GL4.GL_TRIANGLES);
+		model.draw(GL3.GL_TRIANGLES);
 		
 		gl.glFlush();
 	}
 
 	@Override
-	public void reshape(final int x, final int y, final int width, final int height) {}
+	public void reshape(final int x, final int y, final int width, final int height) {
+		
+		gl.glViewport(0, 0, width, height);
+		
+		pMatrix.loadIdentity();
+		pMatrix.perspective(40f, aspect, 1.0f, 100.0f);
+		pMatrix.bind();
+	}
 
 	@Override
 	public void dispose() {

@@ -1,6 +1,6 @@
 package br.usp.gl.models;
 
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
 import br.usp.gl.buffers.ArrayBuffer;
 import br.usp.gl.buffers.ArrayElementsBuffer;
@@ -8,7 +8,7 @@ import br.usp.gl.core.Texture2D;
 
 public abstract class Model {
 	
-	protected GL4 gl;
+	protected GL3 gl;
 	
 	protected float[] positions;
 	protected float[] normals;
@@ -29,23 +29,23 @@ public abstract class Model {
 	int[] vaoHandle;
 	
 	
-	public void init(GL4 gl, int positionHandle) {
+	public void init(GL3 gl, int positionHandle) {
 		
 		init(gl, positionHandle, -1, null, -1);
 	}
 	
-	public void init(GL4 gl, int positionHandle, int normalsHandle) {
+	public void init(GL3 gl, int positionHandle, int normalsHandle) {
 		
 		init(gl, positionHandle, normalsHandle, null, -1);
 	}
 	
-	public void init(GL4 gl, int positionHandle,
+	public void init(GL3 gl, int positionHandle,
 			Texture2D texture, int textureCoordHandle) {
 		
 		init(gl, positionHandle, -1, texture, textureCoordHandle);
 	}
 	
-	public void init(GL4 gl, int positionHandle, int normalsHandle, 
+	public void init(GL3 gl, int positionHandle, int normalsHandle, 
 			Texture2D texture, int textureCoordHandle) {
 		
 		this.gl = gl;
@@ -107,7 +107,7 @@ public abstract class Model {
 		gl.glBindVertexArray(vaoHandle[0]);
 		
 		if (indicesBuffer != null) {
-			gl.glDrawElements(primitive, indices.length, GL4.GL_UNSIGNED_INT, 0);
+			gl.glDrawElements(primitive, indices.length, GL3.GL_UNSIGNED_INT, 0);
 		} else {
 			gl.glDrawArrays(primitive, 0, positions.length / 3);
 		}

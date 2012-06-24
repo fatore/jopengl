@@ -1,7 +1,7 @@
 package br.usp.gl.app.nopper;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
 import br.usp.gl.core.GLOrthoApp;
 import br.usp.gl.core.Light;
@@ -55,7 +55,7 @@ public class Example04 extends GLOrthoApp{
 	@Override
 	public void display() {
 
-		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 		
 		light.bind();
 		model.bind();
@@ -68,7 +68,7 @@ public class Example04 extends GLOrthoApp{
 		nMatrix.update(mvMatrix);
 		nMatrix.bind();
 			
-		model.draw(GL4.GL_TRIANGLES);
+		model.draw(GL3.GL_TRIANGLES);
 		
 		gl.glFlush();
 	}

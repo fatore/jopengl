@@ -57,6 +57,47 @@ public class Vector3 extends Vector {
 		return dest;
 	}
 	
+	public static Vector3 cross(Vector3 vector0, Vector3 vector1) {
+		
+		float[] result = new float[3];
+
+		result[0] = vector0.getVector()[1] * vector1.getVector()[2] - 
+				vector0.getVector()[2] * vector1.getVector()[1];
+		result[1] = vector0.getVector()[2] * vector1.getVector()[0] - 
+				vector0.getVector()[0] * vector1.getVector()[2];
+		result[2] = vector0.getVector()[0] * vector1.getVector()[1] 
+				- vector0.getVector()[1] * vector1.getVector()[0];
+
+		
+		return new Vector3(result);
+	}
+
+	public static float[] normalize(float[] vector) {
+		
+		float[] dest = new float[3];
+
+		float x = vector[0], y = vector[1], z = vector[2],
+				len = (float) Math.sqrt(x * x + y * y + z * z);
+
+		if (len == 0) {
+			dest[0] = 0;
+			dest[1] = 0;
+			dest[2] = 0;
+			return dest;
+		} else if (len == 1) {
+			dest[0] = x;
+			dest[1] = y;
+			dest[2] = z;
+			return dest;
+		}
+
+		len = 1 / len;
+		dest[0] = x * len;
+		dest[1] = y * len;
+		dest[2] = z * len;
+		return dest;
+	}
+	
 	public void scale(float value) {
 		
         this.vector[0] *= value;

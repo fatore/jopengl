@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
 import com.jogamp.opengl.util.awt.ImageUtil;
 import com.jogamp.opengl.util.texture.Texture;
@@ -12,7 +12,7 @@ import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 
 public class Texture2D {
 	
-	protected GL4 gl;
+	protected GL3 gl;
 	
 	private int id;
 	private int no;
@@ -39,7 +39,7 @@ public class Texture2D {
 		this.no = no;
 	}
 	
-	public void init(GL4 gl, int handle) {
+	public void init(GL3 gl, int handle) {
 		
 		this.gl = gl;
 		
@@ -48,10 +48,10 @@ public class Texture2D {
 		texture = AWTTextureIO.newTexture(gl.getGLProfile(), image, true);
 		
 		texture.bind(gl);
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_NEAREST);
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_NEAREST);
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_REPEAT);
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_REPEAT);
+		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_MAG_FILTER, GL3.GL_NEAREST);
+		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_MIN_FILTER, GL3.GL_NEAREST);
+		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_WRAP_S, GL3.GL_REPEAT);
+		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_WRAP_T, GL3.GL_REPEAT);
 		
 	}
 	

@@ -1,6 +1,6 @@
 package br.usp.gl.core;
 
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
 import br.usp.gl.vectors.Vector4;
 
@@ -8,7 +8,7 @@ import com.jogamp.common.nio.Buffers;
 
 public class Material {
 
-private GL4 gl;
+private GL3 gl;
 	
 	private Vector4 ambientColor;
 	private Vector4 diffuseColor;
@@ -26,10 +26,9 @@ private GL4 gl;
 		setAmbientColor(ambientColor);
 		setDiffuseColor(diffuseColor);
 		setSpecularColor(specularColor);
+		setSpecularExponent(specularExponent);
 	}
 
-	public GL4 getGl() {return gl;}
-	
 	public float[] getAmbientColor() {return ambientColor.getVector();}
 	public float[] getDiffuseColor() {return diffuseColor.getVector();}
 	public float[] getSpecularColor() {return specularColor.getVector();}
@@ -45,7 +44,7 @@ private GL4 gl;
 	public int getSpecularColorHandle() {return specularColorHandle;}
 	public int getSpecularExpoentHandle() {return specularExponentHandle;}
 	
-	public void init(GL4 gl, int ambientColorHandle, int diffuseColorHandle,
+	public void init(GL3 gl, int ambientColorHandle, int diffuseColorHandle,
 			int specularColorHandle, int specularExponentHandle) {
 		
 		this.gl = gl;
