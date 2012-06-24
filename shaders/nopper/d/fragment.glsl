@@ -27,9 +27,7 @@ out vec4 fragColor;
 void main() {
 
 	// ambient coeficient
-	vec4 color;
-	
-	color = u_light.ambientColor * u_material.ambientColor;
+	vec4 color = u_light.ambientColor * u_material.ambientColor;
 	
 	vec3 normal = normalize(v_normal);
 	
