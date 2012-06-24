@@ -1,22 +1,34 @@
 package br.usp.gl.app.nopper;
 
+import java.util.Calendar;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
 
-import br.usp.gl.core.GLApp;
+import br.usp.gl.core.GLApp2;
 import br.usp.gl.core.Light;
 import br.usp.gl.core.Material;
 import br.usp.gl.core.Texture2D;
+import br.usp.gl.matrices.Matrix3;
+import br.usp.gl.matrices.Matrix4;
 import br.usp.gl.models.Cube;
 import br.usp.gl.models.Model;
+import br.usp.gl.util.Maths;
 
 
-public class Example06 extends GLApp {
+public class Example06 extends GLApp2 {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/e/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/six/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
+	
+	private Matrix4 modelMatrix;
+	private Matrix4 viewMatrix;
+	private Matrix4 projectionMatrix;
+	private Matrix4 viewProjectionMatrix;
+	
+	private Matrix3 normalMatrix;
 	
 	private Light light;
 	
@@ -26,9 +38,17 @@ public class Example06 extends GLApp {
 	
 	private Model model;
 	
+	private float angle = 0.0f;
+	
 	public Example06() {
 		
 		super(SHADERS_FOLDER);
+		
+		modelMatrix = new Matrix4();
+		viewMatrix = new Matrix4();
+		projectionMatrix = new Matrix4();
+		viewProjectionMatrix = new Matrix4();
+		normalMatrix = new Matrix3();
 		
 		light = new Light(
 				new float[]{1.0f, 1.0f, 1.0f},
@@ -41,9 +61,9 @@ public class Example06 extends GLApp {
 				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 20.0f);
 		
-		texture = new Texture2D(TEXTURES_FOLDER + "crate.tga", GL3.GL_TEXTURE0, 0);
+		texture = new Texture2D(TEXTURES_FOLDER + "crate.png", GL3.GL_TEXTURE0, 0);
 		
-		model = new Cube();
+		model = new Cube(0.5f);
 	}
 
 	@Override
@@ -55,7 +75,11 @@ public class Example06 extends GLApp {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_CULL_FACE);
 		
-		light.init(gl, shaderProgram.getUniformLocation("u_light.direction"),
+		viewProjectionMatrix.init(gl, shaderProgram.getUniformLocation("u_viewProjectionMatrix"));
+		modelMatrix.init(gl, shaderProgram.getUniformLocation("u_modelMatrix"));
+		normalMatrix.init(gl, shaderProgram.getUniformLocation("u_normalMatrix"));
+		
+		light.init(gl, shaderProgram.getUniformLocation("u_lightDirection"),
 				shaderProgram.getUniformLocation("u_light.ambientColor"),
 				shaderProgram.getUniformLocation("u_light.diffuseColor"),
 				shaderProgram.getUniformLocation("u_light.specularColor"));
@@ -68,7 +92,8 @@ public class Example06 extends GLApp {
 		texture.init(gl, shaderProgram.getUniformLocation("u_texture"));
 		
 		model.init(gl, shaderProgram.getAttribLocation("a_vertex"),
-				shaderProgram.getAttribLocation("a_normal"));
+				shaderProgram.getAttribLocation("a_normal"), 
+				texture, shaderProgram.getAttribLocation("a_texCoord"));
 	}
 
 	@Override
@@ -76,20 +101,35 @@ public class Example06 extends GLApp {
 
 		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 		
-		mvMatrix.loadIdentity();
-		mvMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-		mvMatrix.bind();
+		modelMatrix.loadIdentity();
+		modelMatrix.rotate(Maths.degToRad(45), new float[]{1,0,0});
+		modelMatrix.rotate(Maths.degToRad(angle), new float[]{0,1,0});
+		modelMatrix.bind();
 		
-		nMatrix.update(mvMatrix);
-		nMatrix.bind();
+		// Model matrix is a rigid body matrix.
+		normalMatrix.extractMatrix(modelMatrix);
+		normalMatrix.bind();
 		
 		light.bind();
 		material.bind();
+		texture.bind();
 		
 		model.bind();
 		model.draw(GL3.GL_TRIANGLES);
 		
 		gl.glFlush();
+		
+		update();
+	}
+	
+	private void update() {
+		
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		long elapsedTime = currentTime - lastTime;
+		
+		angle += 90.0f * (elapsedTime / 1000.0f);
+		
+		lastTime = currentTime;
 	}
 
 	@Override
@@ -97,9 +137,19 @@ public class Example06 extends GLApp {
 		
 		gl.glViewport(0, 0, width, height);
 		
-		pMatrix.loadIdentity();
-		pMatrix.perspective(40f, aspect, 1.0f, 100.0f);
-		pMatrix.bind();
+		// View Matrix
+		viewMatrix.loadIdentity();
+		viewMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+		
+		// Projection Matrix
+		projectionMatrix.loadIdentity();
+		projectionMatrix.perspective(40f, aspect, 1.0f, 100.0f);
+		
+		// VP = P * V
+		viewProjectionMatrix.loadIdentity();
+		viewProjectionMatrix.multiply(projectionMatrix, viewMatrix);
+		
+		viewProjectionMatrix.bind();
 	}
 
 	@Override

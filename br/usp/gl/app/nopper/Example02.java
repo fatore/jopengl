@@ -10,7 +10,7 @@ import br.usp.gl.models.Triangle;
 public class Example02 extends GLApp2 {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/a/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/two/";
 	
 	private Model model;
 	

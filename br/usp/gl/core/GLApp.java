@@ -13,14 +13,13 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
+import br.usp.gl.matrices.Matrix3;
+import br.usp.gl.matrices.Matrix4;
+import br.usp.gl.shaders.ShaderProgram;
+
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.AnimatorBase;
 import com.jogamp.opengl.util.FPSAnimator;
-
-import br.usp.gl.matrices.ModelViewMatrix;
-import br.usp.gl.matrices.NormalMatrix;
-import br.usp.gl.matrices.ProjectionMatrix;
-import br.usp.gl.shaders.ShaderProgram;
 
 
 public abstract class GLApp implements GLEventListener {
@@ -42,11 +41,11 @@ public abstract class GLApp implements GLEventListener {
 	protected final ShaderProgram shaderProgram;
 
 	// Transformation Matrices
-	protected ProjectionMatrix pMatrix;
-	protected ModelViewMatrix mvMatrix;
+	protected Matrix4 pMatrix;
+	protected Matrix4 mvMatrix;
 
 	// Normal Matrix
-	protected NormalMatrix nMatrix;
+	protected Matrix3 nMatrix;
 
 	// Misc
 	protected long lastTime;
@@ -74,9 +73,9 @@ public abstract class GLApp implements GLEventListener {
 
 		shaderProgram = new ShaderProgram(shadersFolder);
 
-		pMatrix = new ProjectionMatrix();
-		mvMatrix = new ModelViewMatrix();
-		nMatrix = new NormalMatrix(); 
+		pMatrix = new Matrix4();
+		mvMatrix = new Matrix4();
+		nMatrix = new Matrix3(); 
 
 		lastTime = Calendar.getInstance().getTimeInMillis();
 	}

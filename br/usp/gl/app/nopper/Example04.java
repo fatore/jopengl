@@ -5,8 +5,8 @@ import javax.media.opengl.GL3;
 
 import br.usp.gl.core.GLApp2;
 import br.usp.gl.core.Light;
+import br.usp.gl.matrices.Matrix3;
 import br.usp.gl.matrices.Matrix4;
-import br.usp.gl.matrices.NormalMatrix;
 import br.usp.gl.models.Cube;
 import br.usp.gl.models.Model;
 import br.usp.gl.util.Maths;
@@ -15,7 +15,7 @@ import br.usp.gl.util.Maths;
 public class Example04 extends GLApp2 {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/c/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/four/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	
 	private Matrix4 modelMatrix;
@@ -23,7 +23,7 @@ public class Example04 extends GLApp2 {
 	private Matrix4 projectionMatrix;
 	private Matrix4 modelViewProjectionMatrix;
 	
-	private NormalMatrix normalMatrix;
+	private Matrix3 normalMatrix;
 	
 	private Light light;
 
@@ -38,7 +38,7 @@ public class Example04 extends GLApp2 {
 		projectionMatrix = new Matrix4();
 		modelViewProjectionMatrix = new Matrix4();
 		
-		normalMatrix = new NormalMatrix();
+		normalMatrix = new Matrix3();
 		
 		light = new Light(
 				new float[]{1.0f, 1.0f, 1.0f},
@@ -47,7 +47,6 @@ public class Example04 extends GLApp2 {
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, true);
 
 		model = new Cube(0.5f);
-		
 	}
 
 	@Override

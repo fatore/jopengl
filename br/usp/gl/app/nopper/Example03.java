@@ -12,7 +12,7 @@ import br.usp.gl.models.Plane;
 public class Example03 extends GLApp2  {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/b/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/three/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	
 	private Matrix4 modelMatrix;

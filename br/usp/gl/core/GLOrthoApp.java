@@ -61,7 +61,7 @@ public abstract class GLOrthoApp extends GLApp {
 			}
 			mvMatrix.bind();
 			
-			nMatrix.update(mvMatrix);
+			nMatrix.extractInverseAndTranspose(mvMatrix);
 			nMatrix.bind();
 
 			defineVisualParameters();

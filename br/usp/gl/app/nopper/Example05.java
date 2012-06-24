@@ -3,19 +3,28 @@ package br.usp.gl.app.nopper;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
 
-import br.usp.gl.core.GLApp;
+import br.usp.gl.core.GLApp2;
 import br.usp.gl.core.Light;
 import br.usp.gl.core.Material;
+import br.usp.gl.matrices.Matrix3;
+import br.usp.gl.matrices.Matrix4;
 import br.usp.gl.models.Model;
 import br.usp.gl.models.Sphere;
 
 
-public class Example05 extends GLApp {
+public class Example05 extends GLApp2 {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/d/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/five/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
+	
+	private Matrix4 modelMatrix;
+	private Matrix4 viewMatrix;
+	private Matrix4 projectionMatrix;
+	private Matrix4 modelViewMatrix;
+	
+	private Matrix3 normalMatrix;
 	
 	private Light light;
 	private Material material;
@@ -25,6 +34,13 @@ public class Example05 extends GLApp {
 	public Example05() {
 		
 		super(SHADERS_FOLDER);
+		
+		modelMatrix = new Matrix4();
+		viewMatrix = new Matrix4();
+		projectionMatrix = new Matrix4();
+		modelViewMatrix = new Matrix4();
+		
+		normalMatrix = new Matrix3();
 		
 		light = new Light(
 				new float[]{1.0f, 1.0f, 1.0f},
@@ -49,6 +65,10 @@ public class Example05 extends GLApp {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_CULL_FACE);
 		
+		projectionMatrix.init(gl, shaderProgram.getUniformLocation("u_projectionMatrix"));
+		modelViewMatrix.init(gl, shaderProgram.getUniformLocation("u_modelViewMatrix"));
+		normalMatrix.init(gl, shaderProgram.getUniformLocation("u_normalMatrix"));
+		
 		light.init(gl, shaderProgram.getUniformLocation("u_light.direction"),
 				shaderProgram.getUniformLocation("u_light.ambientColor"),
 				shaderProgram.getUniformLocation("u_light.diffuseColor"),
@@ -68,11 +88,24 @@ public class Example05 extends GLApp {
 
 		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 		
-		mvMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-		mvMatrix.bind();
+		// Initialize with the identity matrix ...
+		modelMatrix.loadIdentity();
 		
-		nMatrix.update(mvMatrix);
-		nMatrix.bind();
+		// Create the view matrix.
+		viewMatrix.loadIdentity();
+		viewMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+		
+		// The calculations are done in camera / view space. 
+		// So pass the view matrix, which is a rigid body transform.
+		normalMatrix.extractMatrix(viewMatrix);
+		
+		// MV = V * M (M is identity)
+		modelViewMatrix.multiply(viewMatrix, modelMatrix);
+		
+		modelViewMatrix.bind();
+		normalMatrix.bind();
+		
+		light.setDirection(Matrix4.multiplyVector3(viewMatrix.getMatrix(), light.getDirection()));
 		
 		light.bind();
 		material.bind();
@@ -88,9 +121,9 @@ public class Example05 extends GLApp {
 		
 		gl.glViewport(0, 0, width, height);
 		
-		pMatrix.loadIdentity();
-		pMatrix.perspective(40f, aspect, 1.0f, 100.0f);
-		pMatrix.bind();
+		projectionMatrix.loadIdentity();
+		projectionMatrix.perspective(40f, aspect, 1.0f, 100.0f);
+		projectionMatrix.bind();
 	}
 
 	@Override

@@ -78,7 +78,7 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 	    
 	    mvMatrix.bind();
 	    
-	    nMatrix.update(mvMatrix);
+	    nMatrix.extractInverseAndTranspose(mvMatrix);
 	    nMatrix.bind();
 	    
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
