@@ -1,9 +1,9 @@
 package br.usp.gl.app.nopper;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
-import br.usp.gl.core.GLApp2;
+import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Light;
 import br.usp.gl.core.Material;
 import br.usp.gl.matrices.Matrix3;
@@ -12,10 +12,10 @@ import br.usp.gl.models.Model;
 import br.usp.gl.models.Sphere;
 
 
-public class Example05 extends GLApp2 {
+public class Example05 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/five/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/5_";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
 	
@@ -86,7 +86,7 @@ public class Example05 extends GLApp2 {
 	@Override
 	public void display() {
 
-		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
 		
 		// Initialize with the identity matrix ...
 		modelMatrix.loadIdentity();
@@ -97,7 +97,7 @@ public class Example05 extends GLApp2 {
 		
 		// The calculations are done in camera / view space. 
 		// So pass the view matrix, which is a rigid body transform.
-		normalMatrix.extractMatrix(viewMatrix);
+		normalMatrix.extract(viewMatrix);
 		
 		// MV = V * M (M is identity)
 		modelViewMatrix.multiply(viewMatrix, modelMatrix);
@@ -111,7 +111,7 @@ public class Example05 extends GLApp2 {
 		material.bind();
 		
 		model.bind();
-		model.draw(GL3.GL_TRIANGLES);
+		model.draw(GL4.GL_TRIANGLES);
 		
 		gl.glFlush();
 	}

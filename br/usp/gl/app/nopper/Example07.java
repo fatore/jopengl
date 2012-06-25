@@ -3,9 +3,9 @@ package br.usp.gl.app.nopper;
 import java.util.Calendar;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
-import br.usp.gl.core.GLApp2;
+import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Light;
 import br.usp.gl.core.Material;
 import br.usp.gl.core.Texture2D;
@@ -15,10 +15,10 @@ import br.usp.gl.models.Model;
 import br.usp.gl.models.Plane;
 
 
-public class Example07 extends GLApp2 {
+public class Example07 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/seven/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/7_";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
 	
@@ -64,8 +64,8 @@ public class Example07 extends GLApp2 {
 				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 20.0f);
 		
-		texture = new Texture2D(TEXTURES_FOLDER + "rock_color.png", GL3.GL_TEXTURE0, 0);
-		normalMap = new Texture2D(TEXTURES_FOLDER + "rock_normal.png", GL3.GL_TEXTURE1, 1);
+		texture = new Texture2D(TEXTURES_FOLDER + "rock_color.png", GL4.GL_TEXTURE0, 0);
+		normalMap = new Texture2D(TEXTURES_FOLDER + "rock_normal.png", GL4.GL_TEXTURE1, 1);
 		
 		model = new Plane(1.5f);
 	}
@@ -108,7 +108,7 @@ public class Example07 extends GLApp2 {
 		viewMatrix.loadIdentity();
 		viewMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 		
-		normalMatrix.extractMatrix(viewMatrix);
+		normalMatrix.extract(viewMatrix);
 		normalMatrix.bind();
 		
 		// MV = V * M (M is identity)
@@ -120,7 +120,7 @@ public class Example07 extends GLApp2 {
 	@Override
 	public void display() {
 
-		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
 		
 		light.setDirection(new float[]{1,1,1});
 		light.incDirection(new float[] {(float) (Math.cos(angle)), 0, 0});
@@ -133,7 +133,7 @@ public class Example07 extends GLApp2 {
 		normalMap.bind();
 		
 		model.bind();
-		model.draw(GL3.GL_TRIANGLES);
+		model.draw(GL4.GL_TRIANGLES);
 		
 		gl.glFlush();
 		

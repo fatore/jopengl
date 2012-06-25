@@ -1,8 +1,8 @@
 #version 420 core
 
-uniform mat4 uMVMatrix;
+uniform mat4 u_modelViewMatrix;
 
-uniform mat3 uNMatrix;
+uniform mat3 u_normalMatrix;
 
 layout(triangles) in;
 
@@ -19,7 +19,7 @@ void main()
 {
     vec3 A = tePosition[2] - tePosition[0];
     vec3 B = tePosition[1] - tePosition[0];
-    gFacetNormal = uNMatrix * normalize(cross(A, B));
+    gFacetNormal = u_normalMatrix * normalize(cross(A, B));
     
     gPatchDistance = tePatchDistance[0];
     gTriDistance = vec3(1, 0, 0);

@@ -1,8 +1,8 @@
 #version 420 core
 
-uniform mat4 uMVMatrix;
+uniform mat4 u_modelViewMatrix;
 
-uniform mat3 uNMatrix;
+uniform mat3 u_normalMatrix;
 
 layout(triangles) in;
 
@@ -17,7 +17,7 @@ void main()
 {
     vec3 A = vPosition[2] - vPosition[0];
     vec3 B = vPosition[1] - vPosition[0];
-    gFacetNormal = uNMatrix * normalize(cross(A, B));
+    gFacetNormal = u_normalMatrix * normalize(cross(A, B));
     
     gTriDistance = vec3(1, 0, 0);
     gl_Position = gl_in[0].gl_Position; EmitVertex();

@@ -53,14 +53,23 @@ public class JsonObjectReader {
 		
 		positions = new float[split.length];
 		
+		float min = Float.POSITIVE_INFINITY;
+		float max = 0.0f;
+		
 		int i = 0;
 		try {
 			for (i = 0; i < positions.length; i++) {
-				positions[i] = Float.parseFloat(split[i]);			
+				float value = Float.parseFloat(split[i]);
+				positions[i] = value;
+				min = (value < min) ? value : min;
+				max = (value > max) ? value : max;
 			}
 		} catch (Exception e) {
 			System.err.println(split[i]);
 			e.printStackTrace();
+		}
+		for (i = 0; i < positions.length; i++) {
+			positions[i] = ((positions[i] - min) / (max - min) - 0.5f) * 2.0f;
 		}
 	}
 	

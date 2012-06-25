@@ -7,8 +7,8 @@ in vec3 tcPosition[];
 out vec3 tePosition;
 out vec3 tePatchDistance;
 
-uniform mat4 uPMatrix;
-uniform mat4 uMVMatrix;
+uniform mat4 u_projectionMatrix;
+uniform mat4 u_modelViewMatrix;
 
 void main() {
 
@@ -20,5 +20,5 @@ void main() {
     
     tePosition = normalize(p0 + p1 + p2);
     
-    gl_Position = uPMatrix * uMVMatrix * vec4(tePosition, 1);
+    gl_Position = u_projectionMatrix * u_modelViewMatrix * vec4(tePosition, 1);
 }

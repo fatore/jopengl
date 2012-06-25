@@ -1,9 +1,9 @@
 package br.usp.gl.app.nopper;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
-import br.usp.gl.core.GLApp2;
+import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Light;
 import br.usp.gl.matrices.Matrix3;
 import br.usp.gl.matrices.Matrix4;
@@ -12,10 +12,10 @@ import br.usp.gl.models.Model;
 import br.usp.gl.util.Maths;
 
 
-public class Example04 extends GLApp2 {
+public class Example04 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/four/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/4_";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	
 	private Matrix4 modelMatrix;
@@ -75,12 +75,12 @@ public class Example04 extends GLApp2 {
 	@Override
 	public void display() {
 
-		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
 		
 		light.bind();
 			
 		model.bind();
-		model.draw(GL3.GL_TRIANGLES);
+		model.draw(GL4.GL_TRIANGLES);
 		
 		gl.glFlush();
 	}
@@ -98,7 +98,7 @@ public class Example04 extends GLApp2 {
 		
 		// This model matrix is a rigid body transform. 
 		// So no need for the inverse, transposed matrix.
-		normalMatrix.extractMatrix(modelMatrix);
+		normalMatrix.extract(modelMatrix);
 		
 		// Create the view matrix.
 		viewMatrix.loadIdentity();

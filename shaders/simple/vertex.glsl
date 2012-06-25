@@ -1,8 +1,8 @@
 #version 420 core
 
-uniform mat4 uPMatrix;
-uniform mat4 uMVMatrix;
-uniform mat3 uNMatrix;
+uniform mat4 u_projectionMatrix;
+uniform mat4 u_modelViewMatrix;
+uniform mat3 u_normalMatrix;
 
 uniform vec3 uLightDirection;
 
@@ -16,15 +16,15 @@ uniform bool uPancake;
 
 void main()
 {
-    vec4 vertex = uMVMatrix * vec4(aVertexPosition, 1);
+    vec4 vertex = u_modelViewMatrix * vec4(aVertexPosition, 1);
 
 	vEye = -vec3(vertex);
 	
-	vNormal = uNMatrix * aVertexNormal;
+	vNormal = u_normalMatrix * aVertexNormal;
     
     if (!uPancake) {
-    	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1);
+    	gl_Position = u_projectionMatrix * u_modelViewMatrix * vec4(aVertexPosition, 1);
     } else {
-	    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition.x, 0.0, aVertexPosition.z, 1.0);
+	    gl_Position = u_projectionMatrix * u_modelViewMatrix * vec4(aVertexPosition.x, 0.0, aVertexPosition.z, 1.0);
     }
 }

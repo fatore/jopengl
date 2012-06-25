@@ -1,18 +1,18 @@
 package br.usp.gl.app.nopper;
 
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
-import br.usp.gl.core.GLApp2;
+import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Texture2D;
 import br.usp.gl.matrices.Matrix4;
 import br.usp.gl.models.Model;
 import br.usp.gl.models.Plane;
 
 
-public class Example03 extends GLApp2  {
+public class Example03 extends GLApp  {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/three/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/3_";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	
 	private Matrix4 modelMatrix;
@@ -33,7 +33,7 @@ public class Example03 extends GLApp2  {
 		projectionMatrix = new Matrix4();
 		modelViewProjectionMatrix = new Matrix4();
 
-		texture = new Texture2D(TEXTURES_FOLDER + "desert.png", GL3.GL_TEXTURE0, 0);
+		texture = new Texture2D(TEXTURES_FOLDER + "desert.png", GL4.GL_TEXTURE0, 0);
 		
 		model = new Plane((float) texture.getImage().getWidth() / 2.0f, 
 				(float) texture.getImage().getHeight() / 2.0f);
@@ -56,12 +56,12 @@ public class Example03 extends GLApp2  {
 	@Override
 	public void display() {
 
-		gl.glClear(GL3.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL4.GL_COLOR_BUFFER_BIT);
 			
 		texture.bind();
 		
 		model.bind();
-		model.draw(GL3.GL_TRIANGLES);
+		model.draw(GL4.GL_TRIANGLES);
 		
 		gl.glFlush();
 	}

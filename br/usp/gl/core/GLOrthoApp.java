@@ -6,6 +6,7 @@ import javax.media.opengl.GLEventListener;
 import br.usp.gl.listeners.PanListener;
 import br.usp.gl.listeners.TrackballListener;
 import br.usp.gl.listeners.ZoomListener;
+import br.usp.gl.matrices.Matrix3;
 import br.usp.gl.matrices.Matrix4;
 
 
@@ -17,16 +18,34 @@ public abstract class GLOrthoApp extends GLApp {
 	protected PanListener panListener;
 	protected ZoomListener zoomListener;
 	protected TrackballListener trackballListener;
+	
+	// Matrices
+	protected Matrix4 mMatrix;
+	protected Matrix4 vMatrix;
+	protected Matrix4 pMatrix;
+	
+	// Normal Matrices
+	protected Matrix3 nMatrix;
+	
+	protected Matrix4 mvMatrix;
 
 	// Rotation Matrix
-	protected Matrix4 rotationMatrix;
+	private Matrix4 rotationMatrix;
 	
 	public GLOrthoApp(String shadersFolder) {
 		
 		super(shadersFolder);
 		
+		mMatrix = new Matrix4();
+		vMatrix = new Matrix4();
+		pMatrix = new Matrix4();
+		
+		mvMatrix = new Matrix4();
+		
+		nMatrix = new Matrix3();
+		
 		// Events Listeners
-		glCanvas.addGLEventListener(0, new OrthoEventsListener());
+		glCanvas.addGLEventListener(new OrthoEventsListener());
 
 		// Pan Listener
 		panListener = new PanListener(glCanvas);
@@ -48,6 +67,24 @@ public abstract class GLOrthoApp extends GLApp {
 
 		@Override
 		public void init(GLAutoDrawable drawable) {
+			
+			pMatrix.init(gl, shaderProgram.getUniformLocation("u_projectionMatrix"));
+			
+			mvMatrix.init(gl, shaderProgram.getUniformLocation("u_modelViewMatrix"));
+			
+			nMatrix.init(gl, shaderProgram.getUniformLocation("u_normalMatrix"));
+			
+			// Create the model matrix.
+			mMatrix.loadIdentity();
+			
+			// Create the view matrix.
+			vMatrix.loadIdentity();
+			vMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+			
+			// MV = V * M
+			mvMatrix.loadIdentity();
+			mvMatrix.multiply(vMatrix, mMatrix);
+			mvMatrix.bind();
 		}
 
 		@Override
@@ -61,10 +98,10 @@ public abstract class GLOrthoApp extends GLApp {
 			}
 			mvMatrix.bind();
 			
-			nMatrix.extractInverseAndTranspose(mvMatrix);
-			nMatrix.bind();
-
-			defineVisualParameters();
+			nMatrix.extract(mvMatrix);
+		    nMatrix.bind();
+			
+			updateZoomAndPan();
 		}
 		
 		@Override
@@ -79,16 +116,21 @@ public abstract class GLOrthoApp extends GLApp {
 			
 			gl.glViewport(0, 0, canvasWidth, canvasHeight);  
 			
-			defineVisualParameters();
+			updateZoomAndPan();
 		}
 		
 		@Override
 		public void dispose(GLAutoDrawable drawable) {
 		}
 		
-		private void defineVisualParameters() {
+		private void updateZoomAndPan() {
 			
+			// Create a orthogonal projection matrix.
 			pMatrix.loadIdentity();
+//			projectionMatrix.ortho(
+//					-(float) width / 2.0f, (float) width / 2.0f,
+//					-(float) height / 2.0f, (float) height / 2.0f,
+//					-1.0f, 100.0f);
 			
 			if (canvasWidth <= canvasHeight) {
 				pMatrix.ortho(

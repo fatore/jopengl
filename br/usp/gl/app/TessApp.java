@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
 import br.usp.gl.core.GLOrthoApp;
 import br.usp.gl.core.Light;
@@ -52,9 +52,11 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 
 		gl.glClearColor(0.7f, 0.6f, 0.5f, 0.0f);
 		
-		gl.glEnable(GL3.GL_DEPTH_TEST);
+		gl.glEnable(GL4.GL_DEPTH_TEST);
 		
 		gl.glClearDepth(1.0f);
+		
+		gl.glPatchParameteri(GL4.GL_PATCH_VERTICES, 3);
 		
 		light.init(gl, shaderProgram.getUniformLocation("uLightDirection"),
 				shaderProgram.getUniformLocation("uLightAmbientColor"),
@@ -71,23 +73,18 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 
 	@Override
 	public void display() {
+		
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
 		gl.glUniform1f(tessInnerLevelHandle, tessInnerLevel);
 	    gl.glUniform1f(tessOuterLevelHandle, tessOuterLevel);
 	    
 	    light.bind();
-	    
-	    mvMatrix.bind();
-	    
-	    nMatrix.extractInverseAndTranspose(mvMatrix);
-	    nMatrix.bind();
-	    
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-		gl.glPatchParameteri(GL3.GL_PATCH_VERTICES, 3);
+		
 		gl.glUniform3f(light.getAmbientColorHandle(), 0.04f, 0.04f, 0.04f);
 	    gl.glUniform3f(light.getDiffuseColorHandle(),0f, 0.75f, 0.75f);
 		
-	    model.draw(GL3.GL_PATCHES);
+	    model.draw(GL4.GL_PATCHES);
 	}
 
 	@Override

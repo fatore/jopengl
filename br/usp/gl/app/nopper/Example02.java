@@ -1,16 +1,16 @@
 package br.usp.gl.app.nopper;
 
-import javax.media.opengl.GL3;
+import javax.media.opengl.GL4;
 
-import br.usp.gl.core.GLApp2;
+import br.usp.gl.core.GLApp;
 import br.usp.gl.models.Model;
 import br.usp.gl.models.Triangle;
 
 
-public class Example02 extends GLApp2 {
+public class Example02 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/two/";
+	public static final String SHADERS_FOLDER = "shaders/nopper/2_";
 	
 	private Model model;
 	
@@ -33,9 +33,9 @@ public class Example02 extends GLApp2 {
 	@Override
 	public void display() {
 
-		gl.glClear(GL3.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL4.GL_COLOR_BUFFER_BIT);
 			
-		model.draw(GL3.GL_TRIANGLES);
+		model.draw(GL4.GL_TRIANGLES);
 		
 		gl.glFlush();
 	}
