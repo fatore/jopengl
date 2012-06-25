@@ -12,6 +12,8 @@ public abstract class Model {
 	
 	protected float[] positions;
 	protected float[] normals;
+	protected float[] tangents;
+	protected float[] biTangents;
 	protected float[] texCoords;
 	protected int[] indices; 
 	
@@ -19,11 +21,15 @@ public abstract class Model {
 	
 	private ArrayBuffer positionsBuffer;
 	private ArrayBuffer normalsBuffer;
+	private ArrayBuffer tangentsBuffer;
+	private ArrayBuffer biTangentsBuffer;
 	private ArrayBuffer textureCoordsBuffer;
 	private ArrayElementsBuffer indicesBuffer;
 	
 	private int positionHandle;
 	private int normalsHandle;
+	private int tangentsHandle;
+	private int biTangentsHandle;
 	private int textureCoordHandle;
 	
 	int[] vaoHandle;
@@ -31,7 +37,7 @@ public abstract class Model {
 	
 	public void init(GL3 gl, int positionHandle) {
 		
-		init(gl, positionHandle, -1, null, -1);
+		init(gl, positionHandle, -1);
 	}
 	
 	public void init(GL3 gl, int positionHandle, int normalsHandle) {
@@ -48,10 +54,20 @@ public abstract class Model {
 	public void init(GL3 gl, int positionHandle, int normalsHandle, 
 			Texture2D texture, int textureCoordHandle) {
 		
+		init(gl, positionHandle, normalsHandle, -1, -1, texture, textureCoordHandle);
+	}
+	
+	public void init(GL3 gl, int positionHandle, int normalsHandle, 
+			int tangentsHandle, int biTangentsHandle,
+			Texture2D texture, int textureCoordHandle) {
+		
 		this.gl = gl;
 		
 		this.positionHandle = positionHandle;
+		
 		this.normalsHandle = normalsHandle;
+		this.tangentsHandle = tangentsHandle;
+		this.biTangentsHandle = biTangentsHandle;
 		
 		this.texture = texture;
 		this.textureCoordHandle = textureCoordHandle;
@@ -67,6 +83,14 @@ public abstract class Model {
 		
 		if (normals != null && normalsHandle >= 0) {
 			normalsBuffer = new ArrayBuffer(gl, normals, 3, normalsHandle);
+		}
+		
+		if (tangents != null && tangentsHandle >= 0) {
+			tangentsBuffer = new ArrayBuffer(gl, tangents, 3, tangentsHandle);
+		}
+		
+		if (biTangents != null && biTangentsHandle >= 0) {
+			biTangentsBuffer = new ArrayBuffer(gl, biTangents, 3, biTangentsHandle);
 		}
 		
 		if (texCoords != null && textureCoordHandle >= 0) {
@@ -92,6 +116,14 @@ public abstract class Model {
 			normalsBuffer.bind();
 		}
 		
+		if (tangentsBuffer != null) {
+			tangentsBuffer.bind();
+		}
+		
+		if (biTangentsBuffer != null) {
+			biTangentsBuffer.bind();
+		}
+		
 		if (textureCoordsBuffer != null) {
 			textureCoordsBuffer.bind();
 			texture.bind();
@@ -100,11 +132,11 @@ public abstract class Model {
 		if (indicesBuffer != null) {
 			indicesBuffer.bind();
 		}
+		
+		gl.glBindVertexArray(vaoHandle[0]);
 	}
 	
 	public void draw(int primitive) {
-		
-		gl.glBindVertexArray(vaoHandle[0]);
 		
 		if (indicesBuffer != null) {
 			gl.glDrawElements(primitive, indices.length, GL3.GL_UNSIGNED_INT, 0);
@@ -121,6 +153,14 @@ public abstract class Model {
 		
 		if (normalsBuffer != null) {
 			normalsBuffer.dispose();
+		}
+		
+		if (tangentsBuffer != null) {
+			tangentsBuffer.dispose();
+		}
+		
+		if (biTangentsBuffer != null) {
+			biTangentsBuffer.dispose();
 		}
 		
 		if (indicesBuffer != null) {

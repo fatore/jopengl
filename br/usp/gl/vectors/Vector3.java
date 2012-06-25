@@ -71,6 +71,17 @@ public class Vector3 extends Vector {
 		
 		return new Vector3(result);
 	}
+	
+	public static float[] cross(float[] vector0, float[] vector1) {
+		
+		float[] result = new float[3];
+
+		result[0] = vector0[1] * vector1[2] - vector0[2] * vector1[1];
+		result[1] = vector0[2] * vector1[0] - vector0[0] * vector1[2];
+		result[2] = vector0[0] * vector1[1] - vector0[1] * vector1[0];
+		
+		return result;
+	}
 
 	public static float[] normalize(float[] vector) {
 		
