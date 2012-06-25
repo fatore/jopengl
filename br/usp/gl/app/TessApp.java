@@ -49,6 +49,8 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 
 	@Override
 	public void init() {
+		
+		super.init();
 
 		gl.glClearColor(0.7f, 0.6f, 0.5f, 0.0f);
 		
@@ -74,6 +76,8 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 	@Override
 	public void display() {
 		
+		super.display();
+		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
 		gl.glUniform1f(tessInnerLevelHandle, tessInnerLevel);
@@ -88,11 +92,9 @@ public class TessApp extends GLOrthoApp implements KeyListener {
 	}
 
 	@Override
-	public void reshape(final int x,
-			final int y, final int width, final int height) {}
-
-	@Override
 	public void dispose() {
+		
+		super.dispose();
 		
 		model.dispose();
 	}

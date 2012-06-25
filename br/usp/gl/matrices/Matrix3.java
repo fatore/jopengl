@@ -20,7 +20,12 @@ public class Matrix3 extends Matrix {
 	
 	public void bind() {
 
-		gl.glUniformMatrix3fv(handle, 1, false, this.matrix, 0);
+		bind(false);
+	}
+	
+	public void bind(boolean transposed) {
+		
+		gl.glUniformMatrix3fv(handle, 1, transposed, this.matrix, 0);
 	}
 	
 	public void loadIdentity() {

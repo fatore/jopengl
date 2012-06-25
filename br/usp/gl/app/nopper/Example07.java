@@ -8,7 +8,7 @@ import javax.media.opengl.GL4;
 import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Light;
 import br.usp.gl.core.Material;
-import br.usp.gl.core.Texture2D;
+import br.usp.gl.effects.Texture2D;
 import br.usp.gl.matrices.Matrix3;
 import br.usp.gl.matrices.Matrix4;
 import br.usp.gl.models.Model;

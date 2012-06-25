@@ -4,7 +4,8 @@ import javax.media.opengl.GL4;
 
 import br.usp.gl.buffers.ArrayBuffer;
 import br.usp.gl.buffers.ArrayElementsBuffer;
-import br.usp.gl.core.Texture2D;
+import br.usp.gl.effects.Effect;
+import br.usp.gl.effects.Texture2D;
 
 public abstract class Model {
 	
@@ -17,7 +18,7 @@ public abstract class Model {
 	protected float[] texCoords;
 	protected int[] indices; 
 	
-	private Texture2D texture;
+	private Effect effect;
 	
 	private ArrayBuffer positionsBuffer;
 	private ArrayBuffer normalsBuffer;
@@ -51,15 +52,20 @@ public abstract class Model {
 		init(gl, positionHandle, -1, texture, textureCoordHandle);
 	}
 	
+	public void init(GL4 gl, int positionHandle, int normalsHandle, Effect effect) {
+		
+		init(gl, positionHandle, normalsHandle, -1, -1, effect, -1);
+	}
+	
 	public void init(GL4 gl, int positionHandle, int normalsHandle, 
-			Texture2D texture, int textureCoordHandle) {
+			Effect texture, int textureCoordHandle) {
 		
 		init(gl, positionHandle, normalsHandle, -1, -1, texture, textureCoordHandle);
 	}
 	
 	public void init(GL4 gl, int positionHandle, int normalsHandle, 
 			int tangentsHandle, int biTangentsHandle,
-			Texture2D texture, int textureCoordHandle) {
+			Effect texture, int textureCoordHandle) {
 		
 		this.gl = gl;
 		
@@ -69,7 +75,7 @@ public abstract class Model {
 		this.tangentsHandle = tangentsHandle;
 		this.biTangentsHandle = biTangentsHandle;
 		
-		this.texture = texture;
+		this.effect = texture;
 		this.textureCoordHandle = textureCoordHandle;
 		
 		initBuffers();
@@ -126,7 +132,7 @@ public abstract class Model {
 		
 		if (textureCoordsBuffer != null) {
 			textureCoordsBuffer.bind();
-			texture.bind();
+			effect.bind();
 		}
 		
 		if (indicesBuffer != null) {

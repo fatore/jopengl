@@ -1,8 +1,5 @@
 package br.usp.gl.core;
 
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
-
 import br.usp.gl.listeners.PanListener;
 import br.usp.gl.listeners.TrackballListener;
 import br.usp.gl.listeners.ZoomListener;
@@ -44,9 +41,6 @@ public abstract class GLOrthoApp extends GLApp {
 		
 		nMatrix = new Matrix3();
 		
-		// Events Listeners
-		glCanvas.addGLEventListener(new OrthoEventsListener());
-
 		// Pan Listener
 		panListener = new PanListener(glCanvas);
 		glCanvas.addMouseListener(panListener);
@@ -63,94 +57,87 @@ public abstract class GLOrthoApp extends GLApp {
 		glCanvas.addMouseMotionListener(trackballListener);
 	}
 	
-	class OrthoEventsListener implements GLEventListener {
+	@Override
+	public void init() {
 
-		@Override
-		public void init(GLAutoDrawable drawable) {
-			
-			pMatrix.init(gl, shaderProgram.getUniformLocation("u_projectionMatrix"));
-			
-			mvMatrix.init(gl, shaderProgram.getUniformLocation("u_modelViewMatrix"));
-			
-			nMatrix.init(gl, shaderProgram.getUniformLocation("u_normalMatrix"));
-			
-			// Create the model matrix.
-			mMatrix.loadIdentity();
-			
-			// Create the view matrix.
-			vMatrix.loadIdentity();
-			vMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-			
-			// MV = V * M
-			mvMatrix.loadIdentity();
-			mvMatrix.multiply(vMatrix, mMatrix);
-			mvMatrix.bind();
-		}
-
-		@Override
-		public void display(GLAutoDrawable drawable) {
-			
-			mvMatrix.loadIdentity();
-
-			rotationMatrix = trackballListener.getRotationMatrix();
-			if (rotationMatrix != null) {
-				mvMatrix.multiply(rotationMatrix);
-			}
-			mvMatrix.bind();
-			
-			nMatrix.extract(mvMatrix);
-		    nMatrix.bind();
-			
-			updateZoomAndPan();
-		}
+		pMatrix.init(gl, shaderProgram.getUniformLocation("u_projectionMatrix"));
 		
-		@Override
-		public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
-			
-			if (h == 0) {h = 1;}
-			
-			canvasWidth = w; 
-			canvasHeight = h;
-			
-			aspect = (float) canvasWidth / canvasHeight;
-			
-			gl.glViewport(0, 0, canvasWidth, canvasHeight);  
-			
-			updateZoomAndPan();
-		}
+		mvMatrix.init(gl, shaderProgram.getUniformLocation("u_modelViewMatrix"));
 		
-		@Override
-		public void dispose(GLAutoDrawable drawable) {
-		}
+		nMatrix.init(gl, shaderProgram.getUniformLocation("u_normalMatrix"));
 		
-		private void updateZoomAndPan() {
-			
-			// Create a orthogonal projection matrix.
-			pMatrix.loadIdentity();
-//			projectionMatrix.ortho(
-//					-(float) width / 2.0f, (float) width / 2.0f,
-//					-(float) height / 2.0f, (float) height / 2.0f,
-//					-1.0f, 100.0f);
-			
-			if (canvasWidth <= canvasHeight) {
-				pMatrix.ortho(
-						-zoomListener.getZoom() + panListener.getPanX(), // left
-					 	 zoomListener.getZoom() + panListener.getPanX(), // right
-						-zoomListener.getZoom() / aspect + panListener.getPanY(), // bottom
-						 zoomListener.getZoom() / aspect + panListener.getPanY(), // top
-						-zoomListener.getZoom() * 10.0f, // near
-						 zoomListener.getZoom() * 10.0f); // far
-			} else {
-				pMatrix.ortho(
-						-zoomListener.getZoom() * aspect + panListener.getPanX(), // left
-						 zoomListener.getZoom() * aspect + panListener.getPanX(), // right
-						-zoomListener.getZoom() + panListener.getPanY(), // bottom
-						 zoomListener.getZoom() + panListener.getPanY(), // top
-						-zoomListener.getZoom() * 10.0f, // near
-						 zoomListener.getZoom() * 10.0f); // far
-			}
+		// Create the model matrix.
+		mMatrix.loadIdentity();
+		
+		// Create the view matrix.
+		vMatrix.loadIdentity();
+		vMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+		
+		// MV = V * M
+		mvMatrix.loadIdentity();
+		mvMatrix.multiply(vMatrix, mMatrix);
+		mvMatrix.bind();
+	}
 
-			pMatrix.bind();
+	@Override
+	public void display() {
+		
+		mvMatrix.loadIdentity();
+
+		rotationMatrix = trackballListener.getRotationMatrix();
+		if (rotationMatrix != null) {
+			mvMatrix.multiply(rotationMatrix);
 		}
+		mvMatrix.bind();
+		
+		nMatrix.extract(mvMatrix);
+	    nMatrix.bind();
+		
+		updateZoomAndPan();
+	}
+
+	@Override
+	public void reshape(int x, int y, int width, int height) {
+
+		if (height == 0) {height = 1;}
+		
+		canvasWidth = width; 
+		canvasHeight = height;
+		
+		aspect = (float) canvasWidth / canvasHeight;
+		
+		gl.glViewport(0, 0, canvasWidth, canvasHeight);  
+		
+		updateZoomAndPan();
+	}
+
+	@Override
+	public void dispose() {}
+		
+
+	private void updateZoomAndPan() {
+		
+		// Create a orthogonal projection matrix.
+		pMatrix.loadIdentity();
+		
+		if (canvasWidth <= canvasHeight) {
+			pMatrix.ortho(
+					-zoomListener.getZoom() + panListener.getPanX(), // left
+				 	 zoomListener.getZoom() + panListener.getPanX(), // right
+					-zoomListener.getZoom() / aspect + panListener.getPanY(), // bottom
+					 zoomListener.getZoom() / aspect + panListener.getPanY(), // top
+					-zoomListener.getZoom() * 10.0f, // near
+					 zoomListener.getZoom() * 10.0f); // far
+		} else {
+			pMatrix.ortho(
+					-zoomListener.getZoom() * aspect + panListener.getPanX(), // left
+					 zoomListener.getZoom() * aspect + panListener.getPanX(), // right
+					-zoomListener.getZoom() + panListener.getPanY(), // bottom
+					 zoomListener.getZoom() + panListener.getPanY(), // top
+					-zoomListener.getZoom() * 10.0f, // near
+					 zoomListener.getZoom() * 10.0f); // far
+		}
+
+		pMatrix.bind();
 	}
 }

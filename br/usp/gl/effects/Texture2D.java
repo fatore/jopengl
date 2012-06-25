@@ -1,4 +1,4 @@
-package br.usp.gl.core;
+package br.usp.gl.effects;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,19 +10,15 @@ import com.jogamp.opengl.util.awt.ImageUtil;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 
-public class Texture2D {
-	
-	protected GL4 gl;
-	
-	private int id;
-	private int no;
+public class Texture2D extends Effect {
 	
 	private BufferedImage image;
 	public BufferedImage getImage() {return image;}
 	
-	private int handle;
-	
 	private Texture texture;
+	
+	private int id;
+	private int no;
 	
 	public Texture2D(String imageFile, int id, int no) {
 		
@@ -39,11 +35,10 @@ public class Texture2D {
 		this.no = no;
 	}
 	
+	@Override
 	public void init(GL4 gl, int handle) {
 		
-		this.gl = gl;
-		
-		this.handle = handle;
+		super.init(gl, handle);
 		
 		texture = AWTTextureIO.newTexture(gl.getGLProfile(), image, true);
 		
@@ -52,9 +47,9 @@ public class Texture2D {
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_NEAREST);
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_REPEAT);
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_REPEAT);
-		
 	}
 	
+	@Override
 	public void bind() {
 		
 		gl.glUniform1i(handle, no);
