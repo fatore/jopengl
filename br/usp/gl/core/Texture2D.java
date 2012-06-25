@@ -57,8 +57,8 @@ public class Texture2D {
 	
 	public void bind() {
 		
+		gl.glUniform1i(handle, no);
 		gl.glActiveTexture(id);
 		texture.bind(gl);		
-		gl.glUniform1i(handle, no);
 	}
 }

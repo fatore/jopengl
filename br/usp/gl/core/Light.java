@@ -38,6 +38,15 @@ public class Light {
 	public float[] getAmbientColor() {return ambientColor.getVector();}
 	public float[] getDiffuseColor() {return diffuseColor.getVector();}
 	public float[] getSpecularColor() {return specularColor.getVector();}
+	
+	public void incDirection(float[] inc) {
+		
+		this.direction.getVector()[0] += inc[0];
+		this.direction.getVector()[1] += inc[1];
+		this.direction.getVector()[2] += inc[2];
+		
+		this.direction.normalize();
+	}
 
 	public void setDirection(float[] direction) {
 		this.direction = new Vector3(direction);
