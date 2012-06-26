@@ -1,6 +1,8 @@
 package br.usp.gl.shaders;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,8 +10,6 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import javax.media.opengl.GL3;
-
-import br.usp.gl.util.Resource;
 
 import com.jogamp.common.nio.Buffers;
 
@@ -68,16 +68,16 @@ public class ShaderProgram {
 	public void readSources() {
 		
 		System.out.println("Reading shaders from: " + sourcesFolder);
-		
+
 		sources = new String[TYPES.length];
-		
+
 		for (int i = 0; i < sources.length; i++) {
-			InputStream source = Resource.getInputStream(sourcesFolder + SHADERS[i] + ".glsl");
-			if (source == null) {
-				System.err.println("\t" + SHADERS[i] + " shader not found.");
-			} else {
+			try {
+				InputStream source = new FileInputStream(new File(sourcesFolder + SHADERS[i] + ".glsl"));
 				System.out.println("\t" + SHADERS[i] + " shader found.");
 				sources[i] = readSource(source);
+			} catch (Exception e) {
+				System.err.println("Shader not found.");
 			}
 		}
 	}

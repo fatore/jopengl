@@ -51,11 +51,11 @@ public class CubeMap extends Effect {
 		texture = TextureIO.newTexture(GL.GL_TEXTURE_CUBE_MAP);
 		texture.bind(gl);
 
-		try {
-			for (int i = 0; i < suffixes.length; i++) {
-				
-				String resourceName = basename + suffixes[i] + "." + suffix;
-				
+		for (int i = 0; i < suffixes.length; i++) {
+
+			String resourceName = basename + suffixes[i] + "." + suffix;
+
+			try {
 				TextureData data = TextureIO.newTextureData(gl.getGLProfile(), 
 						new FileInputStream(new File(resourceName)),
 						mipmapped,
@@ -64,10 +64,10 @@ public class CubeMap extends Effect {
 					throw new IOException("Unable to load texture " + resourceName);
 				}
 				texture.updateImage(gl, data, targets[i]);
+			} catch (Exception e) {
+				System.err.println("Failed to load textures.");
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			System.err.println("Failed to load textures.");
-			e.printStackTrace();
 		}
 		
 		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_MAG_FILTER, GL3.GL_LINEAR);
