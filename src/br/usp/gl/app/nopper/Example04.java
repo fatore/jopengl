@@ -15,7 +15,7 @@ import br.usp.gl.util.Maths;
 public class Example04 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/4_";
+	public static final String SHADERS_FOLDER = "shaders/nopper/4/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	
 	private Matrix4 modelMatrix;
@@ -68,7 +68,7 @@ public class Example04 extends GLApp {
 				shaderProgram.getUniformLocation("u_color"),
 				shaderProgram.getUniformLocation("uLightSpecularColor"));
 		
-		model.init(gl, shaderProgram.getAttribLocation("a_vertex"),
+		model.init(gl, shaderProgram.getAttribLocation("a_position"),
 				shaderProgram.getAttribLocation("a_normal"));
 	}
 

@@ -6,7 +6,7 @@ uniform mat3 u_normalMatrix;
 
 uniform vec3 u_lightDirection;
 
-in vec3 a_vertex;
+in vec3 a_position;
 in vec3 a_normal;
 in vec2 a_texCoord;
 
@@ -23,6 +23,6 @@ void main(void)
 
 	v_texCoord = a_texCoord;
 
-	gl_Position = u_viewProjectionMatrix * u_modelMatrix * vec4(a_vertex, 1.0);
+	gl_Position = u_viewProjectionMatrix * u_modelMatrix * vec4(a_position, 1.0);
 }
 

@@ -42,6 +42,37 @@ public class Matrix4 extends Matrix {
 	    return result;
 	}
 	
+	public static float[] multiplyPoint3(float[] matrix, float[] point) {
+
+		float[] result = new float[3];
+	    float[] temp = new float[4];
+
+	    float inverseW;
+
+	    for (int i = 0; i < 3; i++) {
+	    	
+	        temp[i] = matrix[i] * point[0] +
+	        		matrix[4 + i] * point[1] +
+	        		matrix[8 + i] * point[2] +
+	        		matrix[12 + i] * 1.0f;
+	    }
+	    
+	    for (int i = 0; i <  result.length; i++) {
+	        result[i] = temp[i];
+	    }
+
+	    if (temp[3] != 0.0f && temp[3] != 1.0f) {
+	    	
+	        inverseW = 1.0f / temp[3];
+
+	        for (int i = 0; i < 3; i++) {
+	            result[i] *= inverseW;
+	        }
+	    }
+	    
+	    return result;
+	}
+	
 	public void print() {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {

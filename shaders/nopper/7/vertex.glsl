@@ -6,7 +6,7 @@ uniform mat3 u_normalMatrix;
 
 uniform vec3 u_lightDirection;
 
-in vec3 a_vertex;
+in vec3 a_position;
 in vec3 a_normal;
 in vec3 a_tangent;
 in vec3 a_bitangent;
@@ -34,7 +34,7 @@ void main(void)
 	v_tsLight.z = dot(normal, u_lightDirection);
 	
 	// Bring vertex in camera space.
-	vec4 vertex = u_modelViewMatrix * vec4(a_vertex, 1.0);
+	vec4 vertex = u_modelViewMatrix * vec4(a_position, 1.0);
 	
 	// Calculate eye vector, which is in camera space.
 	vec3 eye = -vec3(vertex);

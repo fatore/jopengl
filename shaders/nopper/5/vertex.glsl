@@ -4,7 +4,7 @@ uniform mat4 u_projectionMatrix;
 uniform mat4 u_modelViewMatrix;
 uniform mat3 u_normalMatrix;
 
-in vec3 a_vertex;
+in vec3 a_position;
 in vec3 a_normal;
 
 out vec3 v_normal;
@@ -12,7 +12,7 @@ out vec3 v_eye;
 
 void main()
 {
-	vec4 vertex = u_modelViewMatrix * vec4(a_vertex, 1.0);
+	vec4 vertex = u_modelViewMatrix * vec4(a_position, 1.0);
 
 	v_eye = -vec3(vertex);
 

@@ -18,7 +18,7 @@ import br.usp.gl.models.Plane;
 public class Example07 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/7_";
+	public static final String SHADERS_FOLDER = "shaders/nopper/7/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
 	
@@ -98,7 +98,7 @@ public class Example07 extends GLApp {
 		texture.init(gl, shaderProgram.getUniformLocation("u_texture"));
 		normalMap.init(gl, shaderProgram.getUniformLocation("u_normalMap"));
 		
-		model.init(gl, shaderProgram.getAttribLocation("a_vertex"),
+		model.init(gl, shaderProgram.getAttribLocation("a_position"),
 				shaderProgram.getAttribLocation("a_normal"), 
 				shaderProgram.getAttribLocation("a_tangent"), 
 				shaderProgram.getAttribLocation("a_bitangent"), 
@@ -122,10 +122,10 @@ public class Example07 extends GLApp {
 
 		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 		
-		light.setDirection(new float[]{1,1,1});
+		light.setDirOrPos(new float[]{1,1,1});
 		light.incDirection(new float[] {(float) (Math.cos(angle)), 0, 0});
 		
-		light.setDirection(Matrix4.multiplyVector3(viewMatrix.getMatrix(), light.getDirection()));
+		light.setDirOrPos(Matrix4.multiplyVector3(viewMatrix.getMatrix(), light.getDirOrPos()));
 		
 		light.bind();
 		material.bind();

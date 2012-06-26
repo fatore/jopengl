@@ -72,12 +72,13 @@ public class ShaderProgram {
 		sources = new String[TYPES.length];
 
 		for (int i = 0; i < sources.length; i++) {
+			String resource = sourcesFolder + SHADERS[i] + ".glsl";
 			try {
-				InputStream source = new FileInputStream(new File(sourcesFolder + SHADERS[i] + ".glsl"));
+				InputStream source = new FileInputStream(new File(resource));
 				System.out.println("\t" + SHADERS[i] + " shader found.");
 				sources[i] = readSource(source);
 			} catch (Exception e) {
-				System.err.println("Shader not found.");
+				System.err.println("\t" + SHADERS[i] + " shader not found.");
 			}
 		}
 	}

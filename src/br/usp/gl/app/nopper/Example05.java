@@ -15,7 +15,7 @@ import br.usp.gl.models.Sphere;
 public class Example05 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/5_";
+	public static final String SHADERS_FOLDER = "shaders/nopper/5/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
 	
@@ -79,7 +79,7 @@ public class Example05 extends GLApp {
 				shaderProgram.getUniformLocation("u_material.specularColor"),
 				shaderProgram.getUniformLocation("u_material.specularExponent"));
 		
-		model.init(gl, shaderProgram.getAttribLocation("a_vertex"),
+		model.init(gl, shaderProgram.getAttribLocation("a_position"),
 				shaderProgram.getAttribLocation("a_normal"));
 	}
 
@@ -105,7 +105,7 @@ public class Example05 extends GLApp {
 		modelViewMatrix.bind();
 		normalMatrix.bind();
 		
-		light.setDirection(Matrix4.multiplyVector3(viewMatrix.getMatrix(), light.getDirection()));
+		light.setDirOrPos(Matrix4.multiplyVector3(viewMatrix.getMatrix(), light.getDirOrPos()));
 		
 		light.bind();
 		material.bind();

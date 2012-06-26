@@ -5,7 +5,7 @@ uniform mat3 u_normalMatrix;
 uniform vec3 u_lightDirection;
 uniform vec4 u_color;
 
-in vec3 a_vertex;
+in vec3 a_position;
 in vec3 a_normal;
 
 out vec4 v_color;
@@ -19,7 +19,7 @@ void main(void) {
 	// <ambient> * al + <diffuse> * max(N*L, 0)
  	v_color = u_color * 0.3 + u_color * max(dot(normal, u_lightDirection), 0.0);
 
-	gl_Position = u_modelViewProjectionMatrix * vec4(a_vertex, 1.0);
+	gl_Position = u_modelViewProjectionMatrix * vec4(a_position, 1.0);
 }
 
 

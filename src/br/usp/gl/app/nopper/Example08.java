@@ -18,7 +18,7 @@ import br.usp.gl.util.Maths;
 public class Example08 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/8_";
+	public static final String SHADERS_FOLDER = "shaders/nopper/8/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
 	
@@ -74,7 +74,7 @@ public class Example08 extends GLApp {
 		
 		cubeMap.init(gl, shaderProgram.getUniformLocation("u_cubemapTexture"));
 		
-		model.init(gl, shaderProgram.getAttribLocation("a_vertex"),
+		model.init(gl, shaderProgram.getAttribLocation("a_position"),
 				shaderProgram.getAttribLocation("a_normal"));
 		
 		// View Matrix

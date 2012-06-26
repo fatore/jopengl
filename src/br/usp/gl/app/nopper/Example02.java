@@ -10,7 +10,7 @@ import br.usp.gl.models.Triangle;
 public class Example02 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/2_";
+	public static final String SHADERS_FOLDER = "shaders/nopper/2/";
 	
 	private Model model;
 	
@@ -26,7 +26,7 @@ public class Example02 extends GLApp {
 
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		
-		model.init(gl, shaderProgram.getAttribLocation("a_vertex"));
+		model.init(gl, shaderProgram.getAttribLocation("a_position"));
 		model.bind();
 	}
 

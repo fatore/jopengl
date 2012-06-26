@@ -5,7 +5,7 @@ uniform mat4 u_modelViewMatrix;
 uniform mat3 u_normalMatrix;
 uniform mat3 u_inverseViewMatrix;
 
-in vec3 a_vertex;
+in vec3 a_position;
 in vec3 a_normal;
 
 out vec3 v_reflect;
@@ -14,7 +14,7 @@ void main(void)
 {
 	// Calculate first in camera / view space.
 
-	vec4 vertex = u_modelViewMatrix * vec4(a_vertex, 1.0);
+	vec4 vertex = u_modelViewMatrix * vec4(a_position, 1.0);
 	
 	vec3 normal = u_normalMatrix * a_normal;
 	

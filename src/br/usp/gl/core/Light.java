@@ -11,7 +11,9 @@ public class Light {
 	
 	private GL3 gl;
 	
-	private Vector3 direction;
+	private Vector3 dirOrPos;
+	private boolean positional;
+	
 	private Vector4 ambientColor;
 	private Vector4 diffuseColor;
 	private Vector4 specularColor;
@@ -23,10 +25,18 @@ public class Light {
 	
 	private boolean on;
 	
-	public Light(float[] direction, float[] ambientColor,
+	public Light(float[] dirOrPos, float[] ambientColor,
 			float[] diffuseColor, float[] specularColor, boolean on) {
 		
-		setDirection(direction);
+		this(dirOrPos, false, ambientColor, diffuseColor, specularColor, on);
+	}
+	
+	public Light(float[] dirOrPos, boolean positional, float[] ambientColor,
+			float[] diffuseColor, float[] specularColor, boolean on) {
+		
+		this.positional = positional;
+		
+		setDirOrPos(dirOrPos);
 		setAmbientColor(ambientColor);
 		setDiffuseColor(diffuseColor);
 		setSpecularColor(specularColor);
@@ -34,23 +44,25 @@ public class Light {
 		this.on = on;
 	}
 
-	public float[] getDirection() {return direction.getVector();}
+	public float[] getDirOrPos() {return dirOrPos.getVector();}
 	public float[] getAmbientColor() {return ambientColor.getVector();}
 	public float[] getDiffuseColor() {return diffuseColor.getVector();}
 	public float[] getSpecularColor() {return specularColor.getVector();}
 	
 	public void incDirection(float[] inc) {
 		
-		this.direction.getVector()[0] += inc[0];
-		this.direction.getVector()[1] += inc[1];
-		this.direction.getVector()[2] += inc[2];
+		this.dirOrPos.getVector()[0] += inc[0];
+		this.dirOrPos.getVector()[1] += inc[1];
+		this.dirOrPos.getVector()[2] += inc[2];
 		
-		this.direction.normalize();
+		this.dirOrPos.normalize();
 	}
 
-	public void setDirection(float[] direction) {
-		this.direction = new Vector3(direction);
-		this.direction.normalize();
+	public void setDirOrPos(float[] dirOrPos) {
+		this.dirOrPos = new Vector3(dirOrPos);
+		if (!positional) {
+			this.dirOrPos.normalize();
+		}
 	}
 	public void setAmbientColor(float[] ambientColor) {this.ambientColor = new Vector4(ambientColor);}
 	public void setDiffuseColor(float[] diffuseColor) {this.diffuseColor = new Vector4(diffuseColor);}
@@ -79,7 +91,7 @@ public class Light {
 	
 	public void bind() {
 		
-		gl.glUniform3fv(directionHandle, 1, Buffers.newDirectFloatBuffer(getDirection()));
+		gl.glUniform3fv(directionHandle, 1, Buffers.newDirectFloatBuffer(getDirOrPos()));
 		gl.glUniform4fv(ambientColorHandle, 1, Buffers.newDirectFloatBuffer(getAmbientColor()));
 		gl.glUniform4fv(diffuseColorHandle, 1, Buffers.newDirectFloatBuffer(getDiffuseColor()));
 		gl.glUniform4fv(specularColorHandle, 1, Buffers.newDirectFloatBuffer(getSpecularColor()));

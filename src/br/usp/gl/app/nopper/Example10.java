@@ -5,7 +5,6 @@ import javax.media.opengl.GL3;
 
 import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Light;
-import br.usp.gl.core.Material;
 import br.usp.gl.matrices.Matrix3;
 import br.usp.gl.matrices.Matrix4;
 import br.usp.gl.models.Model;
@@ -15,7 +14,7 @@ import br.usp.gl.models.Sphere;
 public class Example10 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/10_";
+	public static final String SHADERS_FOLDER = "shaders/nopper/10/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
 	
@@ -27,7 +26,6 @@ public class Example10 extends GLApp {
 	private Matrix3 normalMatrix;
 	
 	private Light light;
-	private Material material;
 
 	private Model model;
 	
@@ -43,17 +41,12 @@ public class Example10 extends GLApp {
 		normalMatrix = new Matrix3();
 		
 		light = new Light(
-				new float[]{1.0f, 1.0f, 1.0f},
+				new float[]{0.0f, 0.5f, 2.0f}, true,
 				new float[]{0.3f, 0.3f, 0.3f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, true);
 
-		material = new Material(
-				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
-				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
-				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 20.0f);
-		
-		model = new Sphere(0.5f, 32);
+		model = new Sphere(1.0f, 32);
 	}
 
 	@Override
@@ -69,31 +62,20 @@ public class Example10 extends GLApp {
 		modelViewMatrix.init(gl, shaderProgram.getUniformLocation("u_modelViewMatrix"));
 		normalMatrix.init(gl, shaderProgram.getUniformLocation("u_normalMatrix"));
 		
-		light.init(gl, shaderProgram.getUniformLocation("u_light.direction"),
+		light.init(gl, shaderProgram.getUniformLocation("u_lightPosition"),
 				shaderProgram.getUniformLocation("u_light.ambientColor"),
 				shaderProgram.getUniformLocation("u_light.diffuseColor"),
 				shaderProgram.getUniformLocation("u_light.specularColor"));
 		
-		material.init(gl, shaderProgram.getUniformLocation("u_material.ambientColor"),
-				shaderProgram.getUniformLocation("u_material.diffuseColor"),
-				shaderProgram.getUniformLocation("u_material.specularColor"),
-				shaderProgram.getUniformLocation("u_material.specularExponent"));
-		
-		model.init(gl, shaderProgram.getAttribLocation("a_vertex"),
+		model.init(gl, shaderProgram.getAttribLocation("a_position"),
 				shaderProgram.getAttribLocation("a_normal"));
-	}
-
-	@Override
-	public void display() {
-
-		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 		
 		// Initialize with the identity matrix ...
 		modelMatrix.loadIdentity();
 		
 		// Create the view matrix.
 		viewMatrix.loadIdentity();
-		viewMatrix.lookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+		viewMatrix.lookAt( 0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 		
 		// The calculations are done in camera / view space. 
 		// So pass the view matrix, which is a rigid body transform.
@@ -104,11 +86,17 @@ public class Example10 extends GLApp {
 		
 		modelViewMatrix.bind();
 		normalMatrix.bind();
+	}
+
+	@Override
+	public void display() {
+
+		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 		
-		light.setDirection(Matrix4.multiplyVector3(viewMatrix.getMatrix(), light.getDirection()));
+		light.setDirOrPos(new float[]{0.0f, 0.5f, 2.0f});
+		light.setDirOrPos(Matrix4.multiplyPoint3(viewMatrix.getMatrix(), light.getDirOrPos()));
 		
 		light.bind();
-		material.bind();
 		
 		model.bind();
 		model.draw(GL3.GL_TRIANGLES);

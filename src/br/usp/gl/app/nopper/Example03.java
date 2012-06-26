@@ -12,7 +12,7 @@ import br.usp.gl.models.Plane;
 public class Example03 extends GLApp  {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/3_";
+	public static final String SHADERS_FOLDER = "shaders/nopper/3/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	
 	private Matrix4 modelMatrix;
@@ -49,7 +49,7 @@ public class Example03 extends GLApp  {
 		
 		texture.init(gl, shaderProgram.getUniformLocation("u_texture"));
 		
-		model.init(gl, shaderProgram.getAttribLocation("a_vertex"), 
+		model.init(gl, shaderProgram.getAttribLocation("a_position"), 
 				texture, shaderProgram.getAttribLocation("a_texCoord"));
 	}
 
