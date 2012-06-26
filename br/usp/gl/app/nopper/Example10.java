@@ -12,10 +12,10 @@ import br.usp.gl.models.Model;
 import br.usp.gl.models.Sphere;
 
 
-public class Example05 extends GLApp {
+public class Example10 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/5_";
+	public static final String SHADERS_FOLDER = "shaders/nopper/10_";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
 	
@@ -31,7 +31,7 @@ public class Example05 extends GLApp {
 
 	private Model model;
 	
-	public Example05() {
+	public Example10() {
 		
 		super(SHADERS_FOLDER);
 		
@@ -134,7 +134,7 @@ public class Example05 extends GLApp {
 	
 	public static void main(final String args[]) {
 
-		Example05 app = new Example05();
+		Example10 app = new Example10();
 		app.run(app.getClass().getName(), FPS);
 	}
 }

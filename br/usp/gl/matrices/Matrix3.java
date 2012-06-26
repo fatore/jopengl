@@ -1,10 +1,10 @@
 package br.usp.gl.matrices;
 
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
 public class Matrix3 extends Matrix {
 
-	private GL4 gl;
+	private GL3 gl;
 	private int handle;
 	
 	public Matrix3() {
@@ -12,7 +12,7 @@ public class Matrix3 extends Matrix {
 		this.matrix = new float[9];
 	}
 	
-	public void init(final GL4 gl, int handle) {
+	public void init(final GL3 gl, int handle) {
 
 		this.gl = gl;
 		this.handle = handle;

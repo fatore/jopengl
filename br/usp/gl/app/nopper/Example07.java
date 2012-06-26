@@ -3,7 +3,7 @@ package br.usp.gl.app.nopper;
 import java.util.Calendar;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
 import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Light;
@@ -64,8 +64,8 @@ public class Example07 extends GLApp {
 				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 20.0f);
 		
-		texture = new Texture2D(TEXTURES_FOLDER + "rock_color.png", GL4.GL_TEXTURE0, 0);
-		normalMap = new Texture2D(TEXTURES_FOLDER + "rock_normal.png", GL4.GL_TEXTURE1, 1);
+		texture = new Texture2D(TEXTURES_FOLDER + "rock_color.png", GL3.GL_TEXTURE0, 0);
+		normalMap = new Texture2D(TEXTURES_FOLDER + "rock_normal.png", GL3.GL_TEXTURE1, 1);
 		
 		model = new Plane(1.5f);
 	}
@@ -120,7 +120,7 @@ public class Example07 extends GLApp {
 	@Override
 	public void display() {
 
-		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 		
 		light.setDirection(new float[]{1,1,1});
 		light.incDirection(new float[] {(float) (Math.cos(angle)), 0, 0});
@@ -133,7 +133,7 @@ public class Example07 extends GLApp {
 		normalMap.bind();
 		
 		model.bind();
-		model.draw(GL4.GL_TRIANGLES);
+		model.draw(GL3.GL_TRIANGLES);
 		
 		gl.glFlush();
 		

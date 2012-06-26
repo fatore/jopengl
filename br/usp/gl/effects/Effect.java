@@ -1,14 +1,14 @@
 package br.usp.gl.effects;
 
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
 public abstract class Effect {
 	
-	protected GL4 gl;
+	protected GL3 gl;
 	
 	protected int handle;
 	
-	public void init(GL4 gl, int handle) {
+	public void init(GL3 gl, int handle) {
 		
 		this.gl = gl;
 		

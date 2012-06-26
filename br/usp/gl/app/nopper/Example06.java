@@ -3,7 +3,7 @@ package br.usp.gl.app.nopper;
 import java.util.Calendar;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GL4;
+import javax.media.opengl.GL3;
 
 import br.usp.gl.core.GLApp;
 import br.usp.gl.core.Light;
@@ -61,7 +61,7 @@ public class Example06 extends GLApp {
 				new float[]{0.0f, 0.0f, 1.0f, 1.0f},
 				new float[]{1.0f, 1.0f, 1.0f, 1.0f}, 20.0f);
 		
-		texture = new Texture2D(TEXTURES_FOLDER + "crate.png", GL4.GL_TEXTURE0, 0);
+		texture = new Texture2D(TEXTURES_FOLDER + "crate.png", GL3.GL_TEXTURE0, 0);
 		
 		model = new Cube(0.5f);
 	}
@@ -99,7 +99,7 @@ public class Example06 extends GLApp {
 	@Override
 	public void display() {
 
-		gl.glClear(GL4.GL_COLOR_BUFFER_BIT | GL4.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
 		
 		modelMatrix.loadIdentity();
 		modelMatrix.rotate(Maths.degToRad(45), new float[]{1,0,0});
@@ -115,7 +115,7 @@ public class Example06 extends GLApp {
 		texture.bind();
 		
 		model.bind();
-		model.draw(GL4.GL_TRIANGLES);
+		model.draw(GL3.GL_TRIANGLES);
 		
 		gl.glFlush();
 		

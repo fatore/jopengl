@@ -8,6 +8,7 @@ import javax.media.opengl.GL3;
 import br.usp.gl.core.GLApp;
 import br.usp.gl.effects.CubeMap;
 import br.usp.gl.effects.Effect;
+import br.usp.gl.effects.Texture2D;
 import br.usp.gl.matrices.Matrix3;
 import br.usp.gl.matrices.Matrix4;
 import br.usp.gl.models.Cube;
@@ -15,30 +16,29 @@ import br.usp.gl.models.Model;
 import br.usp.gl.util.Maths;
 
 
-public class Example08 extends GLApp {
+public class Example09 extends GLApp {
 
 	public static final int FPS = 60;
-	public static final String SHADERS_FOLDER = "shaders/nopper/8_";
+	public static final String SHADERS_FOLDER = "shaders/nopper/9_";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
+	
+	public static final int PARTICLE_TEXTURE_WIDTH = 16;
 	
 	private Matrix4 modelMatrix;
 	private Matrix4 viewMatrix;
 	private Matrix4 projectionMatrix;
 	
-	private Matrix4 modelViewMatrix;
-	
-	private Matrix3 inverseViewMatrix;
-	
-	private Matrix3 normalMatrix;
-	
-	private Effect cubeMap;
+	private Matrix4 modelViewProjectionMatrix;
+
+	private Texture2D texture;
 	
 	private Model model;
 	
 	private float angle = 0.0f;
 	
-	public Example08() {
+	
+	public Example09() {
 		
 		super(SHADERS_FOLDER);
 		
@@ -46,12 +46,9 @@ public class Example08 extends GLApp {
 		viewMatrix = new Matrix4();
 		projectionMatrix = new Matrix4();
 		
-		modelViewMatrix = new Matrix4();
-		inverseViewMatrix = new Matrix3();
+		modelViewProjectionMatrix = new Matrix4();
 		
-		normalMatrix = new Matrix3();
-
-		cubeMap = new CubeMap(TEXTURES_FOLDER + "water_", "png", true, GL3.GL_TEXTURE0, 0);
+		texture = new Texture2D(TEXTURES_FOLDER + "particle.png", GL3.GL_TEXTURE0, 0);
 
 		model = new Cube(0.5f);
 	}
@@ -67,12 +64,7 @@ public class Example08 extends GLApp {
 		
 		projectionMatrix.init(gl, shaderProgram.getUniformLocation("u_projectionMatrix"));
 		
-		modelViewMatrix.init(gl, shaderProgram.getUniformLocation("u_modelViewMatrix"));
-		inverseViewMatrix.init(gl, shaderProgram.getUniformLocation("u_inverseViewMatrix"));
-		
-		normalMatrix.init(gl, shaderProgram.getUniformLocation("u_normalMatrix"));
-		
-		cubeMap.init(gl, shaderProgram.getUniformLocation("u_cubemapTexture"));
+		texture.init(gl, shaderProgram.getUniformLocation("u_texture"));
 		
 		model.init(gl, shaderProgram.getAttribLocation("a_vertex"),
 				shaderProgram.getAttribLocation("a_normal"));
@@ -92,24 +84,6 @@ public class Example08 extends GLApp {
 		// ... by rotating the cube.
 		modelMatrix.rotate(Maths.degToRad(15), new float[]{1,0,0});
 		modelMatrix.rotate(Maths.degToRad(angle), new float[]{0,1,0});
-		
-		// MV = V * M
-		modelViewMatrix.multiply(viewMatrix, modelMatrix);
-		modelViewMatrix.bind();
-		
-		// Again, extract the normal matrix. 
-		// Remember, so far the model view matrix (rotation part) is orthogonal.
-		normalMatrix.extract(modelViewMatrix);
-		normalMatrix.bind();
-		
-		// Extract the rotation part of the view matrix.
-		inverseViewMatrix.extract(viewMatrix);
-		
-		// Pass this matrix to the shader with the transpose flag. 
-	    // As the view matrix is orthogonal, the transposed is the inverse view matrix.
-		inverseViewMatrix.bind(true);
-		
-		cubeMap.bind();
 		
 		model.bind();
 		model.draw(GL3.GL_TRIANGLES);
@@ -148,7 +122,7 @@ public class Example08 extends GLApp {
 	
 	public static void main(final String args[]) {
 
-		Example08 app = new Example08();
+		Example09 app = new Example09();
 		app.run(app.getClass().getName(), FPS);
 	}
 }
