@@ -20,7 +20,14 @@ public class Texture2D extends Effect {
 	private int id;
 	private int no;
 	
+	private int wrapAction;
+	
 	public Texture2D(String imageFile, int id, int no) {
+		
+		this(imageFile, id, no, GL3.GL_REPEAT);
+	}
+	
+	public Texture2D(String imageFile, int id, int no, int wrapAction) {
 		
 		try {
 			image = ImageIO.read(new File(imageFile)); 
@@ -33,15 +40,12 @@ public class Texture2D extends Effect {
 		
 		this.id = id;
 		this.no = no;
+		
+		this.wrapAction = wrapAction;
 	}
 	
 	@Override
 	public void init(GL3 gl, int handle) {
-		
-		init(gl, handle, GL3.GL_REPEAT);
-	}
-	
-	public void init(GL3 gl, int handle, int wrapAction) {
 		
 		super.init(gl, handle);
 		

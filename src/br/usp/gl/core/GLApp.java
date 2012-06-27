@@ -13,8 +13,6 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
-import br.usp.gl.shaders.ShaderProgram;
-
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.AnimatorBase;
 import com.jogamp.opengl.util.FPSAnimator;
@@ -35,13 +33,11 @@ public abstract class GLApp implements GLEventListener {
 	protected int canvasHeight;
 	protected float aspect;
 
-	// Shader Program
-	protected final ShaderProgram shaderProgram;
 
 	// Misc
 	protected long lastTime;
 
-	public GLApp(String shadersFolder) {
+	public GLApp() {
 
 		GLProfile profile = GLProfile.getDefault();
 
@@ -59,8 +55,6 @@ public abstract class GLApp implements GLEventListener {
 		glCanvas.setSize(canvasWidth, canvasHeight);
 
 		glCanvas.addGLEventListener(this);
-
-		shaderProgram = new ShaderProgram(shadersFolder);
 
 		lastTime = Calendar.getInstance().getTimeInMillis();
 	}
@@ -103,17 +97,12 @@ public abstract class GLApp implements GLEventListener {
 
 		System.out.println("OpenGL Version: " + gl.glGetString(GL.GL_VERSION) + "\n");
 
-		shaderProgram.init(gl);
-		shaderProgram.bind();
-
 		init();
 	}
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
 
-		shaderProgram.dispose();
-		
 		dispose();
 	}
 

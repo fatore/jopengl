@@ -5,6 +5,7 @@ import javax.media.opengl.GL3;
 import br.usp.gl.core.GLApp;
 import br.usp.gl.models.Model;
 import br.usp.gl.models.Triangle;
+import br.usp.gl.shaders.ShaderProgram;
 
 
 public class Example02 extends GLApp {
@@ -12,17 +13,22 @@ public class Example02 extends GLApp {
 	public static final int FPS = 60;
 	public static final String SHADERS_FOLDER = "shaders/nopper/2/";
 	
+	private ShaderProgram shaderProgram;
+	
 	private Model model;
 	
 	public Example02() {
 		
-		super(SHADERS_FOLDER);
+		shaderProgram = new ShaderProgram(SHADERS_FOLDER);
 
 		model = new Triangle();
 	}
 
 	@Override
 	public void init() {
+		
+		shaderProgram.init(gl);
+		shaderProgram.bind();
 
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		

@@ -7,6 +7,7 @@ import br.usp.gl.effects.Texture2D;
 import br.usp.gl.matrices.Matrix4;
 import br.usp.gl.models.Model;
 import br.usp.gl.models.Plane;
+import br.usp.gl.shaders.ShaderProgram;
 
 
 public class Example03 extends GLApp  {
@@ -14,6 +15,8 @@ public class Example03 extends GLApp  {
 	public static final int FPS = 60;
 	public static final String SHADERS_FOLDER = "shaders/nopper/3/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
+	
+	private ShaderProgram shaderProgram;
 	
 	private Matrix4 modelMatrix;
 	private Matrix4 viewMatrix;
@@ -26,7 +29,7 @@ public class Example03 extends GLApp  {
 	
 	public Example03() {
 		
-		super(SHADERS_FOLDER);
+		shaderProgram = new ShaderProgram(SHADERS_FOLDER);
 		
 		modelMatrix = new Matrix4();
 		viewMatrix = new Matrix4();
@@ -41,6 +44,9 @@ public class Example03 extends GLApp  {
 
 	@Override
 	public void init() {
+		
+		shaderProgram.init(gl);
+		shaderProgram.bind();
 
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		

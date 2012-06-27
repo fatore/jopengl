@@ -10,6 +10,7 @@ import br.usp.gl.matrices.Matrix3;
 import br.usp.gl.matrices.Matrix4;
 import br.usp.gl.models.Model;
 import br.usp.gl.models.Sphere;
+import br.usp.gl.shaders.ShaderProgram;
 
 
 public class Example05 extends GLApp {
@@ -18,6 +19,8 @@ public class Example05 extends GLApp {
 	public static final String SHADERS_FOLDER = "shaders/nopper/5/";
 	public static final String TEXTURES_FOLDER = "data/textures/";
 	public static final String MODELS_FOLDER = "data/models/";
+	
+	private ShaderProgram shaderProgram;
 	
 	private Matrix4 modelMatrix;
 	private Matrix4 viewMatrix;
@@ -33,7 +36,7 @@ public class Example05 extends GLApp {
 	
 	public Example05() {
 		
-		super(SHADERS_FOLDER);
+		shaderProgram = new ShaderProgram(SHADERS_FOLDER);
 		
 		modelMatrix = new Matrix4();
 		viewMatrix = new Matrix4();
@@ -58,6 +61,9 @@ public class Example05 extends GLApp {
 
 	@Override
 	public void init() {
+		
+		shaderProgram.init(gl);
+		shaderProgram.bind();
 
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		gl.glClearDepth(1.0f);

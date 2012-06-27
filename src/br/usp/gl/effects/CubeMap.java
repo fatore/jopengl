@@ -33,7 +33,15 @@ public class CubeMap extends Effect {
 	private int id;
 	private int no;
 	
-	public CubeMap(String basename, String suffix, boolean mipmapped, int id, int no) {
+	private int wrapAction;
+	
+	public CubeMap(String basename, String suffix, boolean mipmapped,int id, int no) {
+		
+		this(basename, suffix, mipmapped, id, no, GL3.GL_REPEAT);
+	}
+	
+	public CubeMap(String basename, String suffix, boolean mipmapped, 
+			int id, int no, int wrapAction) {
 		
 		this.basename = basename;
 		this.suffix = suffix;
@@ -41,9 +49,9 @@ public class CubeMap extends Effect {
 		
 		this.id = id;
 		this.no = no;
+		this.wrapAction = wrapAction;
 	}
 	
-	@Override
 	public void init(GL3 gl, int handle)  {
 		
 		super.init(gl, handle);
@@ -72,8 +80,8 @@ public class CubeMap extends Effect {
 		
 		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_MAG_FILTER, GL3.GL_LINEAR);
 		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_MIN_FILTER, GL3.GL_LINEAR_MIPMAP_NEAREST);
-		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_WRAP_S, GL3.GL_REPEAT);
-		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_WRAP_T, GL3.GL_REPEAT);
+		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_WRAP_S, wrapAction);
+		gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_WRAP_T, wrapAction);
 	}
 	
 	@Override

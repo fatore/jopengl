@@ -5,11 +5,14 @@ import br.usp.gl.listeners.TrackballListener;
 import br.usp.gl.listeners.ZoomListener;
 import br.usp.gl.matrices.Matrix3;
 import br.usp.gl.matrices.Matrix4;
+import br.usp.gl.shaders.ShaderProgram;
 
 
 public abstract class GLOrthoApp extends GLApp {
 
 	public static final float INITIAL_ZOOM = 2;
+	
+	protected ShaderProgram shaderProgram;
 	
 	// Canvas Listeners
 	protected PanListener panListener;
@@ -31,7 +34,7 @@ public abstract class GLOrthoApp extends GLApp {
 	
 	public GLOrthoApp(String shadersFolder) {
 		
-		super(shadersFolder);
+		shaderProgram = new ShaderProgram(shadersFolder);
 		
 		mMatrix = new Matrix4();
 		vMatrix = new Matrix4();
@@ -59,6 +62,9 @@ public abstract class GLOrthoApp extends GLApp {
 	
 	@Override
 	public void init() {
+		
+		shaderProgram.init(gl);
+		shaderProgram.bind();
 
 		pMatrix.init(gl, shaderProgram.getUniformLocation("u_projectionMatrix"));
 		

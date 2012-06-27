@@ -13,6 +13,7 @@ import br.usp.gl.matrices.Matrix3;
 import br.usp.gl.matrices.Matrix4;
 import br.usp.gl.models.Cube;
 import br.usp.gl.models.Model;
+import br.usp.gl.shaders.ShaderProgram;
 import br.usp.gl.util.Maths;
 
 
@@ -24,6 +25,8 @@ public class Example09 extends GLApp {
 	public static final String MODELS_FOLDER = "data/models/";
 	
 	public static final int PARTICLE_TEXTURE_WIDTH = 16;
+	
+	private ShaderProgram shaderProgram;
 	
 	private Matrix4 modelMatrix;
 	private Matrix4 viewMatrix;
@@ -40,7 +43,7 @@ public class Example09 extends GLApp {
 	
 	public Example09() {
 		
-		super(SHADERS_FOLDER);
+		shaderProgram = new ShaderProgram(SHADERS_FOLDER);
 		
 		modelMatrix = new Matrix4();
 		viewMatrix = new Matrix4();
@@ -55,6 +58,9 @@ public class Example09 extends GLApp {
 
 	@Override
 	public void init() {
+		
+		shaderProgram.init(gl);
+		shaderProgram.bind();
 
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		gl.glClearDepth(1.0f);
