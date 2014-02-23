@@ -12,7 +12,7 @@ import br.usp.icmc.vicg.gl.matrices.Matrix3;
 import br.usp.icmc.vicg.gl.matrices.Matrix4;
 import br.usp.icmc.vicg.gl.models.Cube;
 import br.usp.icmc.vicg.gl.models.Model;
-import br.usp.icmc.vicg.gl.shaders.ShaderProgram;
+import br.usp.icmc.vicg.gl.shaders.SingleShaderProgram;
 import br.usp.icmc.vicg.gl.util.Maths;
 
 
@@ -25,8 +25,8 @@ public class Example11 extends GLApp {
 	
 	public static final float CIRCLE_RADIUS = 5.0f;
 	
-	private ShaderProgram shaderProgram;
-	private ShaderProgram backgroundProgram;
+	private SingleShaderProgram shaderProgram;
+	private SingleShaderProgram backgroundProgram;
 	
 	private Matrix4 modelMatrix;
 	private Matrix4 viewMatrix;
@@ -46,8 +46,8 @@ public class Example11 extends GLApp {
 		
 		super();
 		
-		shaderProgram = new ShaderProgram(SHADERS_FOLDER);
-		backgroundProgram = new ShaderProgram(SHADERS_FOLDER + "bg/");
+		shaderProgram = new SingleShaderProgram(SHADERS_FOLDER);
+		backgroundProgram = new SingleShaderProgram(SHADERS_FOLDER + "bg/");
 		
 		modelMatrix = new Matrix4();
 		viewMatrix = new Matrix4();

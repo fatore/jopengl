@@ -10,7 +10,7 @@ import br.usp.icmc.vicg.gl.matrices.Matrix3;
 import br.usp.icmc.vicg.gl.matrices.Matrix4;
 import br.usp.icmc.vicg.gl.models.Model;
 import br.usp.icmc.vicg.gl.models.Sphere;
-import br.usp.icmc.vicg.gl.shaders.ShaderProgram;
+import br.usp.icmc.vicg.gl.shaders.SingleShaderProgram;
 
 
 public class Example05 extends GLApp {
@@ -20,7 +20,7 @@ public class Example05 extends GLApp {
 	public static final String TEXTURES_FOLDER = "resources/textures/";
 	public static final String MODELS_FOLDER = "resources/models/";
 	
-	private ShaderProgram shaderProgram;
+	private SingleShaderProgram shaderProgram;
 	
 	private Matrix4 modelMatrix;
 	private Matrix4 viewMatrix;
@@ -35,7 +35,7 @@ public class Example05 extends GLApp {
 	private Model model;
 	
 	public Example05() {
-		shaderProgram = new ShaderProgram(SHADERS_FOLDER);
+		shaderProgram = new SingleShaderProgram(SHADERS_FOLDER);
 		
 		modelMatrix = new Matrix4();
 		viewMatrix = new Matrix4();

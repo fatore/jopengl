@@ -9,7 +9,7 @@ import br.usp.icmc.vicg.gl.matrices.Matrix3;
 import br.usp.icmc.vicg.gl.matrices.Matrix4;
 import br.usp.icmc.vicg.gl.models.Cube;
 import br.usp.icmc.vicg.gl.models.Model;
-import br.usp.icmc.vicg.gl.shaders.ShaderProgram;
+import br.usp.icmc.vicg.gl.shaders.SingleShaderProgram;
 import br.usp.icmc.vicg.gl.util.Maths;
 
 
@@ -19,7 +19,7 @@ public class Example04 extends GLApp {
 	public static final String SHADERS_FOLDER = "resources/shaders/nopper/4/";
 	public static final String TEXTURES_FOLDER = "resources/textures/";
 	
-	private ShaderProgram shaderProgram;
+	private SingleShaderProgram shaderProgram;
 	
 	private Matrix4 modelMatrix;
 	private Matrix4 viewMatrix;
@@ -33,7 +33,7 @@ public class Example04 extends GLApp {
 	private Model model;
 	
 	public Example04() {
-		shaderProgram = new ShaderProgram(SHADERS_FOLDER);
+		shaderProgram = new SingleShaderProgram(SHADERS_FOLDER);
 		
 		modelMatrix = new Matrix4();
 		viewMatrix = new Matrix4();

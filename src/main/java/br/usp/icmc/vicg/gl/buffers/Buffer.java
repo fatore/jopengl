@@ -7,7 +7,6 @@ public abstract class Buffer {
 	protected GL3 gl;
 	
 	public Buffer(GL3 gl) {
-		
 		this.gl = gl;
 	}
 	

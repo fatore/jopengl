@@ -27,7 +27,6 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 	private JsonModel model;
 	
 	public AutonormApp() {
-		
 		super(SHADERS_FOLDER);
 
 		this.glCanvas.addKeyListener(this);
@@ -43,7 +42,6 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 
 	@Override
 	public void init() {
-		
 		super.init();
 
 		gl.glClearColor(0.7f, 0.6f, 0.5f, 0.0f);
@@ -66,7 +64,6 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 
 	@Override
 	public void display() {
-		
 		super.display();
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -86,7 +83,6 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 
 	@Override
 	public void dispose() {
-		
 		super.dispose();
 		
 		model.dispose();
@@ -118,9 +114,7 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		
-	}
+	public void keyReleased(KeyEvent e) {}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -140,7 +134,6 @@ public class AutonormApp extends GLOrthoApp implements KeyListener {
 	}
 
 	public static void main(final String args[]) {
-
 		AutonormApp app = new AutonormApp();
 		app.run("Autonorm App", FPS);
 	}

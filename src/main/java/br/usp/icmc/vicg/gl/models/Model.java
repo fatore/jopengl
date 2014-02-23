@@ -35,38 +35,31 @@ public abstract class Model {
 	
 	int[] vaoHandle;
 	
-	
 	public void init(GL3 gl, int positionHandle) {
-		
 		init(gl, positionHandle, -1);
 	}
 	
 	public void init(GL3 gl, int positionHandle, int normalsHandle) {
-		
 		init(gl, positionHandle, normalsHandle, null, -1);
 	}
 	
 	public void init(GL3 gl, int positionHandle,
 			Texture2D texture, int textureCoordHandle) {
-		
 		init(gl, positionHandle, -1, texture, textureCoordHandle);
 	}
 	
 	public void init(GL3 gl, int positionHandle, int normalsHandle, Effect effect) {
-		
 		init(gl, positionHandle, normalsHandle, -1, -1, effect, -1);
 	}
 	
 	public void init(GL3 gl, int positionHandle, int normalsHandle, 
 			Effect texture, int textureCoordHandle) {
-		
 		init(gl, positionHandle, normalsHandle, -1, -1, texture, textureCoordHandle);
 	}
 	
 	public void init(GL3 gl, int positionHandle, int normalsHandle, 
 			int tangentsHandle, int biTangentsHandle,
 			Effect texture, int textureCoordHandle) {
-		
 		this.gl = gl;
 		
 		this.positionHandle = positionHandle;
@@ -82,7 +75,6 @@ public abstract class Model {
 	}
 	
 	private void initBuffers() {
-		
 		if (positions != null) {
 			positionsBuffer = new ArrayBuffer(gl, positions, 3, positionHandle);
 		}
@@ -113,7 +105,6 @@ public abstract class Model {
 	}
 	
 	public void bind() {
-
 		if (positionsBuffer != null) {
 			positionsBuffer.bind();
 		}
@@ -143,7 +134,6 @@ public abstract class Model {
 	}
 	
 	public void draw(int primitive) {
-		
 		if (indicesBuffer != null) {
 			gl.glDrawElements(primitive, indices.length, GL3.GL_UNSIGNED_INT, 0);
 		} else {
@@ -152,7 +142,6 @@ public abstract class Model {
 	}
 	
 	public void dispose() {
-		
 		if (positionsBuffer != null) {
 			positionsBuffer.dispose();
 		}

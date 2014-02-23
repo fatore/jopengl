@@ -13,7 +13,7 @@ import javax.media.opengl.GL3;
 
 import com.jogamp.common.nio.Buffers;
 
-public class ShaderProgram {
+public class SingleShaderProgram {
 
 	private static final int[] TYPES = new int[] {
 		GL3.GL_VERTEX_SHADER,
@@ -37,16 +37,14 @@ public class ShaderProgram {
 
 	private int handle = -1;
 
-	private String[] sources;
-
-	public ShaderProgram(String sourcesFolder) {
+	public SingleShaderProgram(String sourcesFolder) {
 		this.sourcesFolder = sourcesFolder;
 	}
 	
 	public void init(final GL3 gl) {
 		this.gl = gl;
 		
-		readSources();
+		String[] sources = readSources();
 		
 		int[] shadersHandles = new int[sources.length];
 		
@@ -63,10 +61,10 @@ public class ShaderProgram {
 		}
 	}
 	
-	public void readSources() {
+	public String[] readSources() {
 		System.out.println("Reading shaders from: " + sourcesFolder);
 
-		sources = new String[TYPES.length];
+		String[] sources = new String[TYPES.length];
 
 		for (int i = 0; i < sources.length; i++) {
 			String resource = sourcesFolder + SHADERS[i] + ".glsl";
@@ -78,6 +76,7 @@ public class ShaderProgram {
 				System.err.println("\t" + SHADERS[i] + " shader not found.");
 			}
 		}
+		return sources;
 	}
 
 	public void bind() {

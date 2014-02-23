@@ -5,14 +5,14 @@ import br.usp.icmc.vicg.gl.listeners.TrackballListener;
 import br.usp.icmc.vicg.gl.listeners.ZoomListener;
 import br.usp.icmc.vicg.gl.matrices.Matrix3;
 import br.usp.icmc.vicg.gl.matrices.Matrix4;
-import br.usp.icmc.vicg.gl.shaders.ShaderProgram;
+import br.usp.icmc.vicg.gl.shaders.SingleShaderProgram;
 
 
 public abstract class GLOrthoApp extends GLApp {
 
 	public static final float INITIAL_ZOOM = 2;
 	
-	protected ShaderProgram shaderProgram;
+	protected SingleShaderProgram shaderProgram;
 	
 	// Canvas Listeners
 	protected PanListener panListener;
@@ -34,7 +34,7 @@ public abstract class GLOrthoApp extends GLApp {
 	
 	public GLOrthoApp(String shadersFolder) {
 		
-		shaderProgram = new ShaderProgram(shadersFolder);
+		shaderProgram = new SingleShaderProgram(shadersFolder);
 		
 		mMatrix = new Matrix4();
 		vMatrix = new Matrix4();
